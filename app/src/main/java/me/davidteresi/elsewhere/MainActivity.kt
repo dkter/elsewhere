@@ -57,9 +57,19 @@ class MainActivity : AppCompatActivity() {
         return places[randomPlaceIndex]
     }
 
-    private fun refreshWeather() {
+    private fun updateWeatherDisplay(weather: Weather) {
         val tempField = findViewById<TextView>(R.id.temp)
+        val conditionField = findViewById<TextView>(R.id.condition)
+        val humidityField = findViewById<TextView>(R.id.humidity)
+        val windField = findViewById<TextView>(R.id.wind)
 
+        tempField.text = formatTemp(weather.main.temp)
+        conditionField.text = weather.weather[0].description
+        humidityField.text = getString(R.string.humidity, weather.main.humidity.roundToInt())
+        windField.text = getString(R.string.wind, weather.wind.speed.roundToInt())
+    }
+
+    private fun refreshWeather() {
         val queue = Volley.newRequestQueue(this)
         val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=92df737b69120a8131f1ecf704886209"
         val request = JsonObjectRequest(
@@ -67,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             Response.Listener { response ->
                 val gson = Gson()
                 val weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
-                tempField.text = formatTemp(weather.main.temp)
+                updateWeatherDisplay(weather)
             },
             Response.ErrorListener { error ->
                 // TODO: handle request failure

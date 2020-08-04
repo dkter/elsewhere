@@ -48,11 +48,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/precip"
+                        android:id="@+id/condition"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="42% chance of rain"
+                        android:text="Clear sky"
                         android:textAlignment="gravity"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
