@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun refreshWeather() {
         val queue = Volley.newRequestQueue(this)
-        val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=92df737b69120a8131f1ecf704886209"
+        val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=${BuildConfig.OWM_KEY}"
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
