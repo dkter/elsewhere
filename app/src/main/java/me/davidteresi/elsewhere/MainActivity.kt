@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +33,12 @@ class MainActivity : AppCompatActivity() {
         val placeField = findViewById<TextView>(R.id.place)
 
         place = getRandomPlace()
-        placeField.text = getString(R.string.place_name, place.name, place.country)
+        val country = Locale("", place.country)
+        placeField.text = getString(
+            R.string.place_name,
+            place.name,
+            country.getDisplayCountry()
+        )
     }
 
     private fun loadPlaces(): List<Place> {
