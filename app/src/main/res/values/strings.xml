@@ -3,4 +3,12 @@
     <string name="place_name">%1$s, %2$s</string>
     <string name="humidity">%1$d%% humidity</string>
     <string name="wind">%1$d km/h wind speed</string>
+
+    <string name="weather_data_preference">weather_data</string>
+    <string name="weather_data_place_id">weather_data_place_id</string>
+    <string name="weather_data_place_name">weather_data_place_name</string>
+    <string name="weather_data_place_state">weather_data_place_state</string>
+    <string name="weather_data_place_country">weather_data_place_country</string>
+    <string name="weather_data_place_coord_lat">weather_data_place_coord_lat</string>
+    <string name="weather_data_place_coord_lon">weather_data_place_coord_lon</string>
 </resources>

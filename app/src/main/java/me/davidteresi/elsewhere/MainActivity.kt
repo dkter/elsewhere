@@ -1,6 +1,7 @@
 package me.davidteresi.elsewhere
 
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -27,12 +28,13 @@ class MainActivity : AppCompatActivity() {
 
         refreshPlace()
         refreshWeather()
+        place.saveSharedPreferences(this)
     }
 
     private fun refreshPlace() {
         val placeField = findViewById<TextView>(R.id.place)
 
-        place = getRandomPlace()
+        place = getPlace_()
         val country = Locale("", place.country)
         placeField.text = getString(
             R.string.place_name,
@@ -55,6 +57,15 @@ class MainActivity : AppCompatActivity() {
         jsonReader.endArray()
 
         return placeList
+    }
+
+    private fun getPlace_(): Place {
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        ) ?: return getRandomPlace()
+
+        return Place.fromSharedPreferences(prefs, this) ?: getRandomPlace()
     }
 
     private fun getRandomPlace(): Place {
