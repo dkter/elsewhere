@@ -17,6 +17,7 @@ import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     lateinit var place: Place
+    var weather: Weather? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,16 +75,25 @@ class MainActivity : AppCompatActivity() {
         return places[randomPlaceIndex]
     }
 
-    private fun updateWeatherDisplay(weather: Weather) {
+    private fun updateWeatherDisplay() {
         val tempField = findViewById<TextView>(R.id.temp)
         val conditionField = findViewById<TextView>(R.id.condition)
         val humidityField = findViewById<TextView>(R.id.humidity)
         val windField = findViewById<TextView>(R.id.wind)
 
-        tempField.text = formatTemp(weather.main.temp)
-        conditionField.text = weather.weather[0].description
-        humidityField.text = getString(R.string.humidity, weather.main.humidity.roundToInt())
-        windField.text = getString(R.string.wind, weather.wind.speed.roundToInt())
+        tempField.text = formatTemp(weather!!.main.temp)
+        conditionField.text = weather!!.weather[0].description
+        humidityField.text = getString(R.string.humidity, weather!!.main.humidity.roundToInt())
+        windField.text = getString(R.string.wind, weather!!.wind.speed.roundToInt())
+    }
+
+    private fun handleWeatherError() {
+        // maybe pop up an alert saying internet access is required?
+        // TODO: as of rn this will only happen during initialization. if the
+        // place changes but the weather can't be updated, it'll stay
+        // the same as the last place. fix it
+        // (probably just don't update place if weather update fails)
+        weather = null
     }
 
     private fun refreshWeather() {
@@ -93,17 +103,33 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 val gson = Gson()
-                val weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
-                updateWeatherDisplay(weather)
+                weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
+                updateWeatherDisplay()
+                weather!!.saveSharedPreferences(this)
             },
             Response.ErrorListener { error ->
-                // TODO: handle request failure
+                // request failed, so just get saved weather from shared preferences
+                val prefs = getSharedPreferences(
+                    getString(R.string.weather_data_preference),
+                    Context.MODE_PRIVATE
+                )
+                if (prefs != null) {
+                    val w = Weather.fromSharedPreferences(prefs!!, this)
+                    if (w != null)
+                        weather = w
+                    else
+                        handleWeatherError()
+                }
+                else 
+                    handleWeatherError()
+
+                updateWeatherDisplay()
             }
         )
         queue.add(request)
     }
 
-    private fun formatTemp(temp: Double): String {
+    private fun formatTemp(temp: Float): String {
         val celsius = temp - 273
         return "${celsius.roundToInt()}°"
     }

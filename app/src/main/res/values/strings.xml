@@ -11,4 +11,10 @@
     <string name="weather_data_place_country">weather_data_place_country</string>
     <string name="weather_data_place_coord_lat">weather_data_place_coord_lat</string>
     <string name="weather_data_place_coord_lon">weather_data_place_coord_lon</string>
+
+    <string name="weather_data_temp">weather_data_temp</string>
+    <string name="weather_data_humidity">weather_data_humidity</string>
+    <string name="weather_data_condition_main">weather_data_condition_main</string>
+    <string name="weather_data_condition_description">weather_data_condition_description</string>
+    <string name="weather_data_wind_speed">weather_data_wind_speed</string>
 </resources>
