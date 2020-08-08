@@ -12,7 +12,9 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
+import java.util.Calendar
 import java.util.Locale
+import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -39,11 +41,34 @@ class MainActivity : AppCompatActivity() {
             this.weather = weather
             updatePlaceDisplay()
             updateWeatherDisplay()
+            if (isNewDay())
+                this.place = getRandomPlace()
             getInternetWeather()
         }
         else {
             this.place = getRandomPlace()
             getInternetWeather()
+        }
+    }
+
+    private fun isNewDay(): Boolean {
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        )
+
+        val savedDay = prefs?.getString(getString(R.string.weather_data_day), null)
+
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val today = format.format(Calendar.getInstance().time)
+        if (savedDay != null && today == savedDay!!)
+            return false
+        else {
+            with (prefs.edit()) {
+                putString(getString(R.string.weather_data_day), today)
+                commit()
+            }
+            return true
         }
     }
 
