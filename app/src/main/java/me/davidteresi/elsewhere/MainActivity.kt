@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             this.weather = weather
             updatePlaceDisplay()
             updateWeatherDisplay()
+            getInternetWeather()
         }
         else {
             this.place = getRandomPlace()
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity() {
                 weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
                 updatePlaceDisplay()
                 updateWeatherDisplay()
+                place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
             },
             Response.ErrorListener { error ->
