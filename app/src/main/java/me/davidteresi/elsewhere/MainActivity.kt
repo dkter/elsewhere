@@ -17,6 +17,7 @@ import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     lateinit var place: Place
+    var newPlace: Place? = null
     var weather: Weather? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,15 +28,26 @@ class MainActivity : AppCompatActivity() {
         view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
 
-        refreshPlace()
-        refreshWeather()
-        place.saveSharedPreferences(this)
+        refresh()
     }
 
-    private fun refreshPlace() {
-        val placeField = findViewById<TextView>(R.id.place)
+    private fun refresh() {
+        val place = getLocalPlace()
+        val weather = getLocalWeather()
+        if (weather != null && place != null) {
+            this.place = place
+            this.weather = weather
+            updatePlaceDisplay()
+            updateWeatherDisplay()
+        }
+        else {
+            this.place = getRandomPlace()
+            getInternetWeather()
+        }
+    }
 
-        place = getPlace_()
+    private fun updatePlaceDisplay() {
+        val placeField = findViewById<TextView>(R.id.place)
         val country = Locale("", place.country)
         placeField.text = getString(
             R.string.place_name,
@@ -60,13 +72,13 @@ class MainActivity : AppCompatActivity() {
         return placeList
     }
 
-    private fun getPlace_(): Place {
+    private fun getLocalPlace(): Place? {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
             Context.MODE_PRIVATE
-        ) ?: return getRandomPlace()
+        ) ?: return null
 
-        return Place.fromSharedPreferences(prefs, this) ?: getRandomPlace()
+        return Place.fromSharedPreferences(prefs, this)
     }
 
     private fun getRandomPlace(): Place {
@@ -87,16 +99,16 @@ class MainActivity : AppCompatActivity() {
         windField.text = getString(R.string.wind, weather!!.wind.speed.roundToInt())
     }
 
-    private fun handleWeatherError() {
-        // maybe pop up an alert saying internet access is required?
-        // TODO: as of rn this will only happen during initialization. if the
-        // place changes but the weather can't be updated, it'll stay
-        // the same as the last place. fix it
-        // (probably just don't update place if weather update fails)
-        weather = null
+    private fun getLocalWeather(): Weather? {
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        ) ?: return null
+
+        return Weather.fromSharedPreferences(prefs, this)
     }
 
-    private fun refreshWeather() {
+    private fun getInternetWeather() {
         val queue = Volley.newRequestQueue(this)
         val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=${BuildConfig.OWM_KEY}"
         val request = JsonObjectRequest(
@@ -104,26 +116,13 @@ class MainActivity : AppCompatActivity() {
             Response.Listener { response ->
                 val gson = Gson()
                 weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
+                updatePlaceDisplay()
                 updateWeatherDisplay()
                 weather!!.saveSharedPreferences(this)
             },
             Response.ErrorListener { error ->
-                // request failed, so just get saved weather from shared preferences
-                val prefs = getSharedPreferences(
-                    getString(R.string.weather_data_preference),
-                    Context.MODE_PRIVATE
-                )
-                if (prefs != null) {
-                    val w = Weather.fromSharedPreferences(prefs!!, this)
-                    if (w != null)
-                        weather = w
-                    else
-                        handleWeatherError()
-                }
-                else 
-                    handleWeatherError()
-
-                updateWeatherDisplay()
+                // nothing happens if this does nothing, so we don't need to handle an error
+                // (there's still the edge case where it's not set up yet and getInternetWeather() fails)
             }
         )
         queue.add(request)
