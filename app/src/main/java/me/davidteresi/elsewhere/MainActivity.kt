@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             updatePlaceDisplay()
             updateWeatherDisplay()
             if (isNewDay())
-                this.place = getRandomPlace()
+                this.newPlace = getRandomPlace()
             getInternetWeather()
         }
         else {
@@ -135,6 +135,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getInternetWeather() {
+        val place = this.newPlace ?: this.place
         val queue = Volley.newRequestQueue(this)
         val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=${BuildConfig.OWM_KEY}"
         val request = JsonObjectRequest(
@@ -142,6 +143,11 @@ class MainActivity : AppCompatActivity() {
             Response.Listener { response ->
                 val gson = Gson()
                 weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
+                
+                if (this.newPlace != null) {
+                    this.place = this.newPlace!!
+                    this.newPlace = null
+                }
                 updatePlaceDisplay()
                 updateWeatherDisplay()
                 place.saveSharedPreferences(this)
