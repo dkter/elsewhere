@@ -92,11 +92,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Vũng Tàu, Vietnam"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="24sp" />
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/wikipedia_chip"
