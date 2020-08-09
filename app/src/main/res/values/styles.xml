@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ChipTheme" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@color/chipBackgroundColor</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@color/chipStrokeColor</item>
+    </style>
+
 </resources>

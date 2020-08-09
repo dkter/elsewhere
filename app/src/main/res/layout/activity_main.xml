@@ -102,17 +102,21 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/wikipedia_chip"
+                    style="@style/ChipTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="false"
-                    android:text="Wikipedia" />
+                    android:text="@string/wikipedia"
+                    app:chipIcon="@drawable/ic_wikipedia" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/map_chip"
+                    style="@style/ChipTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="false"
-                    android:text="Map" />
+                    android:text="@string/map"
+                    app:chipIcon="@drawable/ic_baseline_explore_24" />
             </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>

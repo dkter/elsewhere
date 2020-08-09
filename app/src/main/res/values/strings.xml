@@ -4,6 +4,9 @@
     <string name="humidity">%1$d%% humidity</string>
     <string name="wind">%1$d km/h wind speed</string>
 
+    <string name="wikipedia">Wikipedia</string>
+    <string name="map">Map</string>
+
     <string name="weather_data_preference">weather_data</string>
     <string name="weather_data_place_id">weather_data_place_id</string>
     <string name="weather_data_place_name">weather_data_place_name</string>
