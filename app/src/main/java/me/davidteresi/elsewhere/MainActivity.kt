@@ -95,7 +95,14 @@ class MainActivity : AppCompatActivity() {
             this.place = getRandomPlace()
             getInternetWeather()
         }
+        saveToday()
         getPlaceImage()
+    }
+
+    private fun getToday(): String {
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val today = format.format(Calendar.getInstance().time)
+        return today
     }
 
     private fun isNewDay(): Boolean {
@@ -106,16 +113,23 @@ class MainActivity : AppCompatActivity() {
 
         val savedDay = prefs?.getString(getString(R.string.weather_data_day), null)
 
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        val today = format.format(Calendar.getInstance().time)
+        val today = getToday()
         if (savedDay != null && today == savedDay!!)
             return false
-        else {
-            with (prefs.edit()) {
-                putString(getString(R.string.weather_data_day), today)
-                commit()
-            }
+        else
             return true
+    }
+
+    private fun saveToday() {
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        )
+        val today = getToday()
+
+        with (prefs.edit()) {
+            putString(getString(R.string.weather_data_day), today)
+            apply()
         }
     }
 
