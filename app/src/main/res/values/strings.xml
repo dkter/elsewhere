@@ -19,4 +19,5 @@
     <string name="weather_data_wind_speed">weather_data_wind_speed</string>
 
     <string name="weather_data_day">weather_data_day</string>
+    <string name="weather_data_image_url">weather_data_image_url</string>
 </resources>

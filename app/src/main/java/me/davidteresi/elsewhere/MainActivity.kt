@@ -18,6 +18,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.gson.Gson
@@ -152,6 +153,7 @@ class MainActivity : AppCompatActivity() {
     private fun setImageBackground() {
         Glide.with(this)
             .load(imageUrl)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(ColorDrawable(R.color.colorPrimary))
             .into(findViewById<ImageView>(R.id.imageView))
     }
@@ -184,7 +186,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPlaceImage() {
-        getWikipediaPlaces()
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        )
+        val url = prefs?.getString(getString(R.string.weather_data_image_url), null)
+        if (url != null) {
+            imageUrl = url
+            setImageBackground()
+        }
+        else
+            getWikipediaPlaces()
     }
 
     private fun getWikipediaPlaces() {
@@ -227,8 +239,17 @@ class MainActivity : AppCompatActivity() {
                 val result = gson.fromJson<WikipediaPageImageResult>(response.toString(), WikipediaPageImageResult::class.java)
                 imageUrl = result?.query?.pages?.getOrNull(0)?.original?.source
                 
-                if (imageUrl != null)
+                if (imageUrl != null) {
+                    val prefs = getSharedPreferences(
+                        getString(R.string.weather_data_preference),
+                        Context.MODE_PRIVATE
+                    )
+                    with (prefs.edit()) {
+                        putString(getString(R.string.weather_data_image_url), imageUrl)
+                        apply()
+                    }
                     setImageBackground()
+                }
             },
             Response.ErrorListener { error ->
             }
