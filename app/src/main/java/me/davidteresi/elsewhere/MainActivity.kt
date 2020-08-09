@@ -67,7 +67,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onWikipediaChipClick() {
-
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        )
+        val wikipediaPage = prefs.getString(getString(R.string.weather_data_wikipedia_page), null)
+        if (wikipediaPage != null) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://en.wikipedia.org/wiki/$wikipediaPage")
+            startActivity(intent)
+        }
     }
 
     private fun refresh() {
@@ -236,7 +245,19 @@ class MainActivity : AppCompatActivity() {
             Response.Listener { response ->
                 val gson = Gson()
                 val result = gson.fromJson<WikipediaGeosearchResult>(response.toString(), WikipediaGeosearchResult::class.java)
-                getWikipediaImage(result?.query?.geosearch?.getOrNull(0)?.title)
+                val title = result?.query?.geosearch?.getOrNull(0)?.title
+
+                if (title != null) {
+                    val prefs = getSharedPreferences(
+                        getString(R.string.weather_data_preference),
+                        Context.MODE_PRIVATE
+                    )
+                    with (prefs.edit()) {
+                        putString(getString(R.string.weather_data_wikipedia_page), title)
+                        apply()
+                    }
+                    getWikipediaImage(title)
+                }
             },
             Response.ErrorListener { error ->
             }
