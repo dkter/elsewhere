@@ -96,7 +96,6 @@ class MainActivity : AppCompatActivity() {
             getInternetWeather()
         }
         saveToday()
-        getPlaceImage()
     }
 
     private fun getToday(): String {
@@ -213,6 +212,7 @@ class MainActivity : AppCompatActivity() {
                 val gson = Gson()
                 weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
                 
+                // update everything only if getInternetWeather() succeeds
                 if (this.newPlace != null) {
                     this.place = this.newPlace!!
                     this.newPlace = null
@@ -221,6 +221,7 @@ class MainActivity : AppCompatActivity() {
                 updateWeatherDisplay()
                 place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
+                getPlaceImage()
             },
             Response.ErrorListener { error ->
                 // nothing happens if this does nothing, so we don't need to handle an error
