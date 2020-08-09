@@ -44,7 +44,10 @@ class MainActivity : AppCompatActivity() {
         val view = window.decorView
         view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+    }
 
+    override fun onResume() {
+        super.onResume()
         refresh()
     }
 
