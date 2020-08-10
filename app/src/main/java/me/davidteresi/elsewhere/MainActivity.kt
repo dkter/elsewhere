@@ -216,6 +216,7 @@ class MainActivity : AppCompatActivity() {
                 if (this.newPlace != null) {
                     this.place = this.newPlace!!
                     this.newPlace = null
+                    removeSavedWikipedia()
                 }
                 updatePlaceDisplay()
                 updateWeatherDisplay()
@@ -313,6 +314,18 @@ class MainActivity : AppCompatActivity() {
             }
         )
         queue.add(pageimage_request)
+    }
+
+    private fun removeSavedWikipedia() {
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        )
+        with (prefs.edit()) {
+            putString(getString(R.string.weather_data_wikipedia_page), null)
+            putString(getString(R.string.weather_data_image_url), null)
+            apply()
+        }
     }
 
     private fun formatTemp(temp: Float): String {
