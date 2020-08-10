@@ -65,7 +65,8 @@
                         android:gravity="right"
                         android:text="Clear sky"
                         android:textAlignment="gravity"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/humidity"
@@ -74,7 +75,8 @@
                         android:gravity="right"
                         android:text="73% humidity"
                         android:textAlignment="gravity"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/wind"
@@ -83,7 +85,8 @@
                         android:gravity="right"
                         android:text="8 km/h wind speed"
                         android:textAlignment="gravity"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
 
