@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         tempField.text = formatTemp(weather!!.main.temp)
         conditionField.text = weather!!.weather[0].description
         humidityField.text = getString(R.string.humidity, weather!!.main.humidity.roundToInt())
-        windField.text = getString(R.string.wind, weather!!.wind.speed.roundToInt())
+        windField.text = formatWindSpeed(weather!!.wind.speed)
     }
 
     private fun getLocalWeather(): Weather? {
@@ -318,5 +318,10 @@ class MainActivity : AppCompatActivity() {
     private fun formatTemp(temp: Float): String {
         val celsius = temp - 273
         return "${celsius.roundToInt()}°"
+    }
+
+    private fun formatWindSpeed(windSpeed: Float): String {
+        val kmh = windSpeed * 3600 / 1000
+        return getString(R.string.wind, kmh.roundToInt())
     }
 }
