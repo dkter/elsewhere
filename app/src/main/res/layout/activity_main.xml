@@ -37,16 +37,29 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextClock
+                android:id="@+id/text_clock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAlignment="gravity"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="0dp">
 
                 <TextView
                     android:id="@+id/temp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:includeFontPadding="false"
                     android:text="29°"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textSize="70sp" />
