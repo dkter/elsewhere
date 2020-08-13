@@ -20,6 +20,7 @@
     <string name="weather_data_condition_main">weather_data_condition_main</string>
     <string name="weather_data_condition_description">weather_data_condition_description</string>
     <string name="weather_data_wind_speed">weather_data_wind_speed</string>
+    <string name="weather_data_timezone">weather_data_timezone</string>
 
     <string name="weather_data_day">weather_data_day</string>
     <string name="weather_data_image_url">weather_data_image_url</string>

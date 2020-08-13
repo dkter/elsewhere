@@ -20,7 +20,8 @@ data class WeatherWind(
 data class Weather(
     val main: WeatherMain,
     val weather: List<WeatherCondition>,
-    val wind: WeatherWind
+    val wind: WeatherWind,
+    val timezone: Int
 ) {
     companion object {
         fun fromSharedPreferences(prefs: SharedPreferences, context: Context): Weather? {
@@ -29,13 +30,15 @@ data class Weather(
             val cond_main = prefs.getString(context.getString(R.string.weather_data_condition_main), null)
             val cond_desc = prefs.getString(context.getString(R.string.weather_data_condition_description), null)
             val wind_speed = prefs.getFloat(context.getString(R.string.weather_data_wind_speed), 0.0f)
-            if (cond_main == null || cond_desc == null)
+            val timezone = prefs.getInt(context.getString(R.string.weather_data_timezone), -1)
+            if (cond_main == null || cond_desc == null || timezone == -1)
                 return null
             else
                 return Weather(
                     WeatherMain(temp, humidity),
                     listOf(WeatherCondition(cond_main!!, cond_desc!!)),
-                    WeatherWind(wind_speed)
+                    WeatherWind(wind_speed),
+                    timezone
                 )
         }
     }
@@ -51,6 +54,7 @@ data class Weather(
             putString(context.getString(R.string.weather_data_condition_main), weather[0].main)
             putString(context.getString(R.string.weather_data_condition_description), weather[0].description)
             putFloat(context.getString(R.string.weather_data_wind_speed), wind.speed)
+            putInt(context.getString(R.string.weather_data_timezone), timezone)
 
             apply()
         }

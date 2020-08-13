@@ -1,6 +1,7 @@
 package me.davidteresi.elsewhere
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,8 +14,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextClock
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -29,6 +30,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
 import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
@@ -223,6 +225,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 updatePlaceDisplay()
                 updateWeatherDisplay()
+                updateTimezone()
                 place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
                 getPlaceImage()
@@ -233,6 +236,12 @@ class MainActivity : AppCompatActivity() {
             }
         )
         queue.add(request)
+    }
+
+    private fun updateTimezone() {
+        val textClock = findViewById<TextClock>(R.id.text_clock)
+        val timezone = TimeZone.getAvailableIDs(weather!!.timezone * 1000)[0]
+        textClock.setTimeZone(timezone)
     }
 
     private fun getPlaceImage() {
