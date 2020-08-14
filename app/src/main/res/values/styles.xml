@@ -15,6 +15,7 @@
 
     <style name="AppTheme.TextClock" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="AppTheme.WeatherTemp" parent="TextAppearance.AppCompat.Large">
