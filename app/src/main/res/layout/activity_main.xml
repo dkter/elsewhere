@@ -43,9 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textAlignment="gravity"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp" />
+                android:textAppearance="@style/AppTheme.TextClock" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,8 +59,7 @@
                     android:gravity="bottom"
                     android:includeFontPadding="false"
                     android:text="29°"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textSize="70sp" />
+                    android:textAppearance="@style/AppTheme.WeatherTemp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -78,8 +75,7 @@
                         android:gravity="right"
                         android:text="Clear sky"
                         android:textAlignment="gravity"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textSize="16sp" />
+                        android:textAppearance="@style/AppTheme.WeatherCondition" />
 
                     <TextView
                         android:id="@+id/humidity"
@@ -88,8 +84,7 @@
                         android:gravity="right"
                         android:text="73% humidity"
                         android:textAlignment="gravity"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textSize="16sp" />
+                        android:textAppearance="@style/AppTheme.WeatherCondition" />
 
                     <TextView
                         android:id="@+id/wind"
@@ -98,8 +93,7 @@
                         android:gravity="right"
                         android:text="8 km/h wind speed"
                         android:textAlignment="gravity"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textSize="16sp" />
+                        android:textAppearance="@style/AppTheme.WeatherCondition" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -108,8 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Vũng Tàu, Vietnam"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp" />
+                android:textAppearance="@style/AppTheme.PlaceName" />
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
@@ -118,7 +111,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/wikipedia_chip"
-                    style="@style/ChipTheme"
+                    style="@style/AppTheme.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="false"
@@ -127,7 +120,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/map_chip"
-                    style="@style/ChipTheme"
+                    style="@style/AppTheme.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="false"

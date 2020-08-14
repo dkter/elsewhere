@@ -7,10 +7,26 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ChipTheme" parent="Widget.MaterialComponents.Chip.Action">
+    <style name="AppTheme.Chip" parent="Widget.MaterialComponents.Chip.Action">
         <item name="chipBackgroundColor">@color/chipBackgroundColor</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipStrokeColor">@color/chipStrokeColor</item>
+    </style>
+
+    <style name="AppTheme.TextClock" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppTheme.WeatherTemp" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">70sp</item>
+    </style>
+
+    <style name="AppTheme.WeatherCondition" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.PlaceName" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">24sp</item>
     </style>
 
 </resources>
