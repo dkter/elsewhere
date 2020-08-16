@@ -225,8 +225,8 @@ class MainActivity : AppCompatActivity() {
                     this.place = this.newPlace!!
                     this.newPlace = null
                     removeSavedWikipedia()
-                    saveToday()
                 }
+                saveToday()
                 updateTimezone()
                 updatePlaceDisplay()
                 updateWeatherDisplay()
