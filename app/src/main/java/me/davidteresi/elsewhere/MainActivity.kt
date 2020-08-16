@@ -104,7 +104,6 @@ class MainActivity : AppCompatActivity() {
             this.place = getRandomPlace()
             getInternetWeather()
         }
-        saveToday()
     }
 
     private fun getToday(): String {
@@ -226,10 +225,11 @@ class MainActivity : AppCompatActivity() {
                     this.place = this.newPlace!!
                     this.newPlace = null
                     removeSavedWikipedia()
+                    saveToday()
                 }
+                updateTimezone()
                 updatePlaceDisplay()
                 updateWeatherDisplay()
-                updateTimezone()
                 place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
                 getPlaceImage()
