@@ -11,4 +11,5 @@
     <color name="chipBackgroundColor">#ffffff</color>
     <color name="chipStrokeColor">#dddddd</color>
     <color name="starfieldBg">#241f31</color>
+    <color name="translucentWhite">#55ffffff</color>
 </resources>

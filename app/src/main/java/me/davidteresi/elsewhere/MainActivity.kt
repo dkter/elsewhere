@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-        window.statusBarColor = Color.parseColor("#44FFFFFF")
+        window.statusBarColor = getColor(R.color.translucentWhite)
 
         val wikipediaChip = findViewById<Chip>(R.id.wikipedia_chip)
         val mapChip = findViewById<Chip>(R.id.map_chip)
