@@ -10,4 +10,5 @@
     <color name="colorAccent">#512da8</color>
     <color name="chipBackgroundColor">#ffffff</color>
     <color name="chipStrokeColor">#dddddd</color>
+    <color name="starfieldBg">#241f31</color>
 </resources>
