@@ -5,6 +5,7 @@
 package me.davidteresi.elsewhere
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.preference.PreferenceManager
 import android.content.Context
@@ -19,9 +20,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.TextClock
 import android.widget.TextView
+import androidx.core.view.updateMargins
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -55,9 +58,16 @@ class MainActivity : AppCompatActivity() {
         val view = window.decorView
         view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         window.statusBarColor = getColor(R.color.translucentWhite)
+
+        // Remove bottom padding on CardView if we're on a system with a
+        // transparent gesture bar
+        val cardView = view.findViewById<CardView>(R.id.cardView)
+        if (hasTransparentGestureBar()) {
+            val params = (cardView.layoutParams as MarginLayoutParams)
+            params.updateMargins(bottom = 0)
+        }
 
         val wikipediaChip = findViewById<Chip>(R.id.wikipedia_chip)
         val mapChip = findViewById<Chip>(R.id.map_chip)
@@ -112,6 +122,14 @@ class MainActivity : AppCompatActivity() {
             this.place = getRandomPlace()
             getInternetWeather()
         }
+    }
+
+    private fun hasTransparentGestureBar(): Boolean {
+        val resourceId = resources.getIdentifier("config_navBarInteractionMode", "integer", "android")
+        if (resourceId > 0 && resources.getInteger(resourceId) == 2)
+            return true
+        else
+            return false
     }
 
     private fun getToday(): String {

@@ -5,7 +5,7 @@
    - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/starfieldBg</item>
         <item name="colorPrimaryDark">@color/starfieldBg</item>
         <item name="colorAccent">@color/colorAccent</item>
