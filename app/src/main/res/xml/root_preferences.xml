@@ -9,7 +9,7 @@
     <PreferenceCategory app:title="@string/format_header">
 
         <ListPreference
-            app:key="units"
+            app:key="@string/units"
             app:title="@string/units_title"
             app:entries="@array/units_entries"
             app:entryValues="@array/units_values"
@@ -17,7 +17,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:key="timefmt"
+            app:key="@string/timefmt"
             app:title="@string/timefmt_title"
             app:entries="@array/timefmt_entries"
             app:entryValues="@array/timefmt_values"

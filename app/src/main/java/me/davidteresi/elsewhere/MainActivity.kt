@@ -6,6 +6,7 @@ package me.davidteresi.elsewhere
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.preference.PreferenceManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -351,8 +352,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatTemp(temp: Float): String {
-        val celsius = temp - 273
-        return "${celsius.roundToInt()}°"
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val units = prefs.getString(getString(R.string.units), "metric")
+        val friendlyTemp = if (units == "imperial") {
+            temp * (9f/5f) - 459.67f
+        }
+        else {
+            temp - 273
+        }
+        return "${friendlyTemp.roundToInt()}°"
     }
 
     private fun formatWindSpeed(windSpeed: Float): String {

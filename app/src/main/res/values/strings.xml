@@ -38,7 +38,9 @@
     <string name="about_header">About</string>
 
     <!-- Format Preferences -->
+    <string name="units">units</string>
     <string name="units_title">Units</string>
+    <string name="timefmt">timefmt</string>
     <string name="timefmt_title">Time format</string>
 
     <!-- About category in settings page -->
