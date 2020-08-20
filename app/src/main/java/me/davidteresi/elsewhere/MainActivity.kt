@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refresh() {
+        updateTimeFmt()
         val place = getLocalPlace()
         val weather = getLocalWeather()
         if (weather != null && place != null) {
@@ -253,6 +254,28 @@ class MainActivity : AppCompatActivity() {
         val textClock = findViewById<TextClock>(R.id.text_clock)
         val timezone = TimeZone.getAvailableIDs(weather!!.timezone * 1000)[0]
         textClock.setTimeZone(timezone)
+    }
+
+    private fun updateTimeFmt() {
+        var prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        var timefmt = prefs.getString(getString(R.string.timefmt), "system")
+        var textClock = findViewById<TextClock>(R.id.text_clock)
+
+        // If the default time format is null, TextClock will fall back on the
+        // other time format. By setting the time format we don't want to null,
+        // we can force the other one.
+        if (timefmt == "12h") {
+            textClock.setFormat12Hour(TextClock.DEFAULT_FORMAT_12_HOUR)
+            textClock.setFormat24Hour(null)
+        }
+        else if (timefmt == "24h") {
+            textClock.setFormat12Hour(null)
+            textClock.setFormat24Hour(TextClock.DEFAULT_FORMAT_24_HOUR)
+        }
+        else {
+            textClock.setFormat12Hour(TextClock.DEFAULT_FORMAT_12_HOUR)
+            textClock.setFormat24Hour(TextClock.DEFAULT_FORMAT_24_HOUR)
+        }
     }
 
     private fun getPlaceImage() {

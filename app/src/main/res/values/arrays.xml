@@ -23,7 +23,7 @@
 
     <string-array name="timefmt_values">
         <item>system</item>
-        <item>twelve</item>
-        <item>twentyfour</item>
+        <item>12h</item>
+        <item>24h</item>
     </string-array>
 </resources>
