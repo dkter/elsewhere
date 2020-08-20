@@ -364,7 +364,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatWindSpeed(windSpeed: Float): String {
-        val kmh = windSpeed * 3600 / 1000
-        return getString(R.string.wind, kmh.roundToInt())
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val units = prefs.getString(getString(R.string.units), "metric")
+        if (units == "imperial") {
+            val friendlySpeed = windSpeed * 2.237f
+            return getString(R.string.wind_imperial, friendlySpeed.roundToInt())
+        }
+        else {
+            val friendlySpeed = windSpeed * 3600 / 1000
+            return getString(R.string.wind_metric, friendlySpeed.roundToInt())
+        }
     }
 }

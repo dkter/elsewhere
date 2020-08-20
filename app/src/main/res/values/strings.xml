@@ -6,7 +6,8 @@
     <string name="app_name">Elsewhere</string>
     <string name="place_name">%1$s, %2$s</string>
     <string name="humidity">%1$d%% humidity</string>
-    <string name="wind">%1$d km/h wind speed</string>
+    <string name="wind_metric">%1$d km/h wind speed</string>
+    <string name="wind_imperial">%1$d mile/h wind speed</string>
 
     <string name="wikipedia">Wikipedia</string>
     <string name="map">Map</string>
