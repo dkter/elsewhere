@@ -1,4 +1,10 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/format_header">
 
@@ -21,6 +27,31 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/about_header">
+
+        <Preference
+            app:key="author"
+            app:title="@string/author_title"
+            app:summary="@string/author_subtitle">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/author_website" />
+        </Preference>
+
+        <Preference
+            app:key="opensource"
+            app:title="@string/opensource_title"
+            app:summary="@string/opensource_subtitle">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/opensource_website" />
+        </Preference>
+
+        <Preference
+            app:key="sourcecredits"
+            app:summary="@string/sourcecredits"
+            app:allowDividerAbove="true"
+            app:selectable="false">
+        </Preference>
 
     </PreferenceCategory>
 

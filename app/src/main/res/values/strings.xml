@@ -42,4 +42,11 @@
     <string name="timefmt_title">Time format</string>
 
     <!-- About category in settings page -->
+    <string name="author_title">Created by David Teresi</string>
+    <string name="author_subtitle">https://davidteresi.me</string>
+    <string name="author_website">https://davidteresi.me</string>
+    <string name="opensource_title">Source code</string>
+    <string name="opensource_subtitle">Licensed under the Mozilla Public License</string>
+    <string name="opensource_website">https://github.com/dkter/Elsewhere</string>
+    <string name="sourcecredits">Weather data from OpenWeatherMap. Place images are sourced from Wikimedia Commons and queried using Wikipedia.</string>
 </resources>
