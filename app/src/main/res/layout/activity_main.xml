@@ -38,7 +38,8 @@
             android:layout_height="32dp"
             android:background="@drawable/rounded_translucent"
             android:contentDescription="@string/settings"
-            android:src="@drawable/ic_settings" />
+            android:src="@drawable/ic_settings"
+            android:onClick="launchSettings" />
     </FrameLayout>
 
     <androidx.cardview.widget.CardView

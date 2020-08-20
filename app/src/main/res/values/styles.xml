@@ -10,6 +10,18 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <style name="AppTheme.SettingsActivity" parent="Theme.MaterialComponents">
+        <item name="colorAccent">@color/colorAccentLight</item>
+        <item name="android:windowBackground">@color/starfieldBg</item>
+        <item name="android:actionBarStyle">@style/AppTheme.SettingsActivity.ActionBar</item>
+        <item name="actionBarStyle">@style/AppTheme.SettingsActivity.ActionBar</item>
+    </style>
+
+    <style name="AppTheme.SettingsActivity.ActionBar" parent="Widget.MaterialComponents.ActionBar.Surface">
+        <item name="android:background">@color/starfieldBg</item>
+        <item name="background">@color/starfieldBg</item>
+    </style>
+
     <style name="AppTheme.Chip" parent="Widget.MaterialComponents.Chip.Action">
         <item name="chipBackgroundColor">@color/chipBackgroundColor</item>
         <item name="chipStrokeWidth">1dp</item>

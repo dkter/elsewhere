@@ -30,4 +30,16 @@
     <string name="weather_data_day">weather_data_day</string>
     <string name="weather_data_image_url">weather_data_image_url</string>
     <string name="weather_data_wikipedia_page">weather_data_wikipedia_page</string>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="format_header">Format</string>
+    <string name="about_header">About</string>
+
+    <!-- Format Preferences -->
+    <string name="units_title">Units</string>
+    <string name="timefmt_title">Time format</string>
+
+    <!-- About category in settings page -->
 </resources>

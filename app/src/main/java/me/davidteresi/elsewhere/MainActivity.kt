@@ -89,6 +89,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun launchSettings(view: View) {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun refresh() {
         val place = getLocalPlace()
         val weather = getLocalWeather()

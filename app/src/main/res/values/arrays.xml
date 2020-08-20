@@ -1,0 +1,25 @@
+<resources>
+    <!-- Units Preference -->
+    <string-array name="units_entries">
+        <item>Metric (Celsius, km/h)</item>
+        <item>Imperial (Fahrenheit, miles/h)</item>
+    </string-array>
+
+    <string-array name="units_values">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+
+    <!-- Time Format Preference -->
+    <string-array name="timefmt_entries">
+        <item>System</item>
+        <item>12-hour (3:00 PM)</item>
+        <item>24-hour (15:00)</item>
+    </string-array>
+
+    <string-array name="timefmt_values">
+        <item>system</item>
+        <item>twelve</item>
+        <item>twentyfour</item>
+    </string-array>
+</resources>
