@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun refresh() {
         updateTimeFmt()
+        setImageBackground(cacheOnly = true)
         val place = getLocalPlace()
         val weather = getLocalWeather()
         if (weather != null && place != null) {
@@ -245,9 +246,10 @@ class MainActivity : AppCompatActivity() {
         return Weather.fromSharedPreferences(prefs, this)
     }
 
-    private fun setImageBackground() {
+    private fun setImageBackground(cacheOnly: Boolean = false) {
         Glide.with(this)
             .load(imageUrl)
+            .onlyRetrieveFromCache(cacheOnly)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.default_bg)
             .into(findViewById<ImageView>(R.id.imageView))
