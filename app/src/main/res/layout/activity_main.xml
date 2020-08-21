@@ -86,7 +86,7 @@
                         android:layout_weight="1"
                         android:gravity="bottom"
                         android:includeFontPadding="false"
-                        android:text="29°"
+                        android:text="@string/default_temp"
                         android:textAppearance="@style/AppTheme.WeatherTemp" />
 
                     <LinearLayout
@@ -101,7 +101,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="Clear sky"
                             android:textAlignment="gravity"
                             android:textAppearance="@style/AppTheme.WeatherCondition" />
 
@@ -110,7 +109,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="73% humidity"
                             android:textAlignment="gravity"
                             android:textAppearance="@style/AppTheme.WeatherCondition" />
 
@@ -119,7 +117,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="8 km/h wind speed"
                             android:textAlignment="gravity"
                             android:textAppearance="@style/AppTheme.WeatherCondition" />
                     </LinearLayout>
@@ -130,13 +127,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="Vũng Tàu, Vietnam"
+                    android:text="@string/default_place"
                     android:textAppearance="@style/AppTheme.PlaceName" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/wikipedia_chip"

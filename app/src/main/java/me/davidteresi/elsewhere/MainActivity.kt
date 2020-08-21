@@ -17,6 +17,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.VectorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -34,6 +35,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
@@ -54,20 +56,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val view = window.decorView
-        view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-        window.statusBarColor = getColor(R.color.translucentWhite)
-
-        // Remove bottom padding on CardView if we're on a system with a
-        // transparent gesture bar
-        val cardView = view.findViewById<CardView>(R.id.cardView)
-        if (hasTransparentGestureBar()) {
-            val params = (cardView.layoutParams as MarginLayoutParams)
-            params.updateMargins(bottom = 0)
-        }
+        setSystemBarStyles()
 
         val wikipediaChip = findViewById<Chip>(R.id.wikipedia_chip)
         val mapChip = findViewById<Chip>(R.id.map_chip)
@@ -110,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         val place = getLocalPlace()
         val weather = getLocalWeather()
         if (weather != null && place != null) {
+            showChipGroup()
             this.place = place
             this.weather = weather
             updatePlaceDisplay()
@@ -124,12 +114,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setSystemBarStyles() {
+        val view = window.decorView
+        view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+
+        window.statusBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getColor(R.color.translucentWhite)
+        }
+        else {
+            resources.getColor(R.color.translucentWhite)
+        }
+
+        // Remove bottom padding on CardView if we're on a system with a
+        // transparent gesture bar
+        val cardView = view.findViewById<CardView>(R.id.cardView)
+        if (hasTransparentGestureBar()) {
+            val params = (cardView.layoutParams as MarginLayoutParams)
+            params.updateMargins(bottom = 0)
+        }
+    }
+
     private fun hasTransparentGestureBar(): Boolean {
         val resourceId = resources.getIdentifier("config_navBarInteractionMode", "integer", "android")
         if (resourceId > 0 && resources.getInteger(resourceId) == 2)
             return true
         else
             return false
+    }
+
+    private fun showChipGroup() {
+        val chipGroup = findViewById<ChipGroup>(R.id.chipGroup)
+        chipGroup.setVisibility(View.VISIBLE)
     }
 
     private fun getToday(): String {
@@ -243,6 +260,8 @@ class MainActivity : AppCompatActivity() {
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
+                showChipGroup()
+
                 val gson = Gson()
                 weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
                 
@@ -261,6 +280,7 @@ class MainActivity : AppCompatActivity() {
                 getPlaceImage()
             },
             Response.ErrorListener { error ->
+                Log.e(TAG, "error getting weather? hmm $error")
                 // nothing happens if this does nothing, so we don't need to handle an error
                 // (there's still the edge case where it's not set up yet and getInternetWeather() fails)
             }
