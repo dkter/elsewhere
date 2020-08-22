@@ -3,6 +3,11 @@
 
 <img alt="Screenshot of Elsewhere showing the weather in Beaverdam Lake-Salisbury Mills, USA" src="assets/screenshots/beaverdam_lake.png" height=500 /><img alt="Screenshot of Elsewhere showing the weather in Brateiu, Austria" src="assets/screenshots/brateiu.png" height=500 />
 
+Every day, Elsewhere gives you the weather in another random location in the world.
+
+## Why?
+Well, you already know the weather where you are, don't you? Maybe you don't know the exact number, but I bet you could estimate it based on the temperature sensors in your body. What you *don't* know, however, is the weather in [Água Doce, Brazil](https://en.wikipedia.org/wiki/%C3%81gua_Doce). (Unless you live there, that is.)
+
 ## Download
 APK build coming soon...
 
