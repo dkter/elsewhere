@@ -13,6 +13,8 @@ Get an OpenWeatherMap API key and create a file called `keys.properties` in the 
 
 You can then build it normally.
 
+**Tip:** if you don't want to use Android Studio, make sure ADB is in your path and launch the app using `dbg.ps1`. It will build the app, install it on your device, run it, and launch logcat filtered to messages from this app.
+
 ## About
 Created by David Teresi.  
 Weather data is sourced from [OpenWeatherMap](https://openweathermap.org). Place images are collected using [Wikipedia](https://wikipedia.org/).
