@@ -1,8 +1,7 @@
 # Elsewhere
 *The weather app that tells you the weather where you aren't*
 
-<img alt="Screenshot of Elsewhere showing the weather in Beaverdam Lake-Salisbury Mills, USA" src="assets/screenshots/beaverdam_lake.png" height=500 />
-<img alt="Screenshot of Elsewhere showing the weather in Brateiu, Austria" src="assets/screenshots/brateiu.png" height=500 />
+<img alt="Screenshot of Elsewhere showing the weather in Beaverdam Lake-Salisbury Mills, USA" src="assets/screenshots/beaverdam_lake.png" height=500 /><img alt="Screenshot of Elsewhere showing the weather in Brateiu, Austria" src="assets/screenshots/brateiu.png" height=500 />
 
 ## Download
 APK build coming soon...
