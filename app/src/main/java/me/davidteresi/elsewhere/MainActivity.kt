@@ -282,7 +282,7 @@ class MainActivity : AppCompatActivity() {
                 getPlaceImage()
             },
             Response.ErrorListener { error ->
-                Log.e(TAG, "error getting weather? hmm $error")
+                Log.e(TAG, "Weather request failed with error: $error")
                 // nothing happens if this does nothing, so we don't need to handle an error
                 // (there's still the edge case where it's not set up yet and getInternetWeather() fails)
             }
