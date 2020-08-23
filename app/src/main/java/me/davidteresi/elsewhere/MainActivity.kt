@@ -280,7 +280,7 @@ class MainActivity : AppCompatActivity() {
                 place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
                 getPlaceImage()
-                getWikipediaPlaces()
+                getPlaceWpArticle()
             },
             Response.ErrorListener { error ->
                 Log.e(TAG, "Weather request failed with error: $error")
@@ -345,7 +345,7 @@ class MainActivity : AppCompatActivity() {
             getWikipediaImage()
     }
 
-    private fun getWikipediaPlaces() {
+    private fun getPlaceWpArticle() {
         val queue = Volley.newRequestQueue(this)
         val geosearch_url = ("https://en.wikipedia.org/w/api.php"
             + "?action=query"
