@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun launchSettings(view: View) {
+    fun onSettingsBtnClick(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
