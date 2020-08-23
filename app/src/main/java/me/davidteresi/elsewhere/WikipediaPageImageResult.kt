@@ -5,7 +5,9 @@
 package me.davidteresi.elsewhere
 
 data class WikipediaPageImageOriginal(
-    val source: String?
+    val source: String?,
+    val width: Int?,
+    val height: Int?
 )
 
 data class WikipediaPageImagePage(
