@@ -400,12 +400,11 @@ class MainActivity : AppCompatActivity() {
 
                 imageUrl = pages
                     // Filter out SVG images (mostly maps, which we don't want)
-                    ?.filterNot { page -> page?.original?.source?.toLowerCase()?.endsWith("svg") ?: true }
+                    ?.filterNot { page -> page?.original?.isSvg() ?: true }
                     // Prioritize JPEG images over PNGs, and prefer higher resolution images
                     ?.sortedWith(compareBy(
                         { page: WikipediaPageImagePage ->
-                            !((page.original?.source?.toLowerCase()?.endsWith("jpg") ?: false)
-                             || (page.original?.source?.toLowerCase()?.endsWith("jpeg") ?: false))
+                            !(page.original?.isJpeg() ?: false)
                         }, { page: WikipediaPageImagePage ->
                             -(page.original?.height ?: 0)
                         }

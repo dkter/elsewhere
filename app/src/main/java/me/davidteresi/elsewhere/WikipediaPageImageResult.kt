@@ -8,7 +8,25 @@ data class WikipediaPageImageOriginal(
     val source: String?,
     val width: Int?,
     val height: Int?
-)
+) {
+    fun isJpeg(): Boolean {
+        if (source == null)
+            return false
+        else {
+            return (
+                source.toLowerCase().endsWith(".jpg")
+                || source.toLowerCase().endsWith(".jpeg")
+            )
+        }
+    }
+
+    fun isSvg(): Boolean {
+        if (source == null)
+            return false
+        else
+            return source.toLowerCase().endsWith(".svg")
+    }
+}
 
 data class WikipediaPageImagePage(
     val original: WikipediaPageImageOriginal?
