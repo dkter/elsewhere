@@ -280,6 +280,7 @@ class MainActivity : AppCompatActivity() {
                 place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
                 getPlaceImage()
+                getWikipediaPlaces()
             },
             Response.ErrorListener { error ->
                 Log.e(TAG, "Weather request failed with error: $error")
@@ -329,7 +330,7 @@ class MainActivity : AppCompatActivity() {
             setImageBackground()
         }
         else
-            getWikipediaPlaces()
+            getWikipediaImage()
     }
 
     private fun getWikipediaPlaces() {
@@ -358,7 +359,6 @@ class MainActivity : AppCompatActivity() {
                         putString(getString(R.string.weather_data_wikipedia_page), title)
                         apply()
                     }
-                    getWikipediaImage(title)
                 }
             },
             Response.ErrorListener { error ->
@@ -367,12 +367,14 @@ class MainActivity : AppCompatActivity() {
         queue.add(geosearch_request)
     }
 
-    private fun getWikipediaImage(title: String?) {
+    private fun getWikipediaImage() {
         val queue = Volley.newRequestQueue(this)
         val pageimage_url = ("https://en.wikipedia.org/w/api.php"
             + "?action=query"
-            + "&prop=pageimages"
-            + "&titles=$title"
+            + "&prop=coordinates|pageimages"
+            + "&generator=geosearch"
+            + "&ggscoord=${place.coord.lat}|${place.coord.lon}"
+            + "&ggsradius=10000"
             + "&piprop=original"
             + "&format=json"
             + "&formatversion=2"
@@ -382,7 +384,17 @@ class MainActivity : AppCompatActivity() {
             Response.Listener { response ->
                 val gson = Gson()
                 val result = gson.fromJson<WikipediaPageImageResult>(response.toString(), WikipediaPageImageResult::class.java)
-                imageUrl = result?.query?.pages?.getOrNull(0)?.original?.source
+                val pages = result?.query?.pages
+
+                imageUrl = pages
+                    // Filter out SVG images (mostly maps, which we don't want)
+                    ?.filterNot { page -> page?.original?.source?.toLowerCase()?.endsWith("svg") ?: true }
+                    // Prioritize JPEG images over PNGs
+                    ?.sortedByDescending { page: WikipediaPageImagePage ->
+                        (page.original?.source?.toLowerCase()?.endsWith("jpg") ?: false)
+                         || (page.original?.source?.toLowerCase()?.endsWith("jpeg") ?: false)
+                    }
+                    ?.getOrNull(0)?.original?.source
                 
                 if (imageUrl != null) {
                     val prefs = getSharedPreferences(
