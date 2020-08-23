@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun refresh() {
         updateTimeFmt()
-        setImageBackground(cacheOnly = true)
+        getCachedPlaceImage()
         val place = getLocalPlace()
         val weather = getLocalWeather()
         if (weather != null && place != null) {
@@ -316,6 +316,18 @@ class MainActivity : AppCompatActivity() {
         else {
             textClock.setFormat12Hour(TextClock.DEFAULT_FORMAT_12_HOUR)
             textClock.setFormat24Hour(TextClock.DEFAULT_FORMAT_24_HOUR)
+        }
+    }
+
+    private fun getCachedPlaceImage() {
+        val prefs = getSharedPreferences(
+            getString(R.string.weather_data_preference),
+            Context.MODE_PRIVATE
+        )
+        val url = prefs?.getString(getString(R.string.weather_data_image_url), null)
+        if (url != null) {
+            imageUrl = url
+            setImageBackground(cacheOnly = true)
         }
     }
 
