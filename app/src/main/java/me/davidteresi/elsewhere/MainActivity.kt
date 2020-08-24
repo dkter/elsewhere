@@ -94,6 +94,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Called every time the activity is resumed. Update the weather, get
+     * a new place if it's the next day, etc.
+     */
     private fun refresh() {
         updateTimeFmt()
         getCachedPlaceImage()
@@ -115,6 +119,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Styles the status bar and navigation bar.
+     * The status bar should always be translucentWhite. The navbar
+     * should have the default translucent style, unless it's a gesture
+     * bar such as in Android 10 and above.
+     */
     private fun setSystemBarStyles() {
         val view = window.decorView
         view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -137,6 +147,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * @return true if the system navigation bar is a gesture bar
+     * that should be fully transparent
+     */
     private fun hasTransparentGestureBar(): Boolean {
         val resourceId = resources.getIdentifier("config_navBarInteractionMode", "integer", "android")
         if (resourceId > 0 && resources.getInteger(resourceId) == 2)
@@ -145,17 +159,27 @@ class MainActivity : AppCompatActivity() {
             return false
     }
 
+    /**
+     * Show the chip group containing the Wikipedia and Map chips
+     */
     private fun showChipGroup() {
         val chipGroup = findViewById<ChipGroup>(R.id.chipGroup)
         chipGroup.setVisibility(View.VISIBLE)
     }
 
+    /**
+     * Get the current date
+     * @return the current date in yyyy-MM-dd format
+     */
     private fun getToday(): String {
         val format = SimpleDateFormat("yyyy-MM-dd")
         val today = format.format(Calendar.getInstance().time)
         return today
     }
 
+    /**
+     * @return true if the day has changed since it was last saved
+     */
     private fun isNewDay(): Boolean {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -171,6 +195,9 @@ class MainActivity : AppCompatActivity() {
             return true
     }
 
+    /**
+     * Save the current date in SharedPreferences
+     */
     private fun saveToday() {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -184,6 +211,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Update the displayed place
+     */
     private fun updatePlaceDisplay() {
         val placeField = findViewById<TextView>(R.id.place)
         val country = Locale("", place.country)
@@ -194,6 +224,9 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Load the list of OpenWeatherMap places into memory
+     */
     private fun loadPlaces(): List<Place> {
         var placeList = ArrayList<Place>()
         val jsonFile = resources.openRawResource(R.raw.cities)
@@ -210,6 +243,9 @@ class MainActivity : AppCompatActivity() {
         return placeList
     }
 
+    /**
+     * Get the current place from SharedPreferences
+     */
     private fun getLocalPlace(): Place? {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -219,12 +255,18 @@ class MainActivity : AppCompatActivity() {
         return Place.fromSharedPreferences(prefs, this)
     }
 
+    /**
+     * @return a random place from the OpenWeatherMap place list
+     */
     private fun getRandomPlace(): Place {
         val places = loadPlaces()
         val randomPlaceIndex = places.indices.random()
         return places[randomPlaceIndex]
     }
 
+    /**
+     * Update the displayed weather
+     */
     private fun updateWeatherDisplay() {
         val tempField = findViewById<TextView>(R.id.temp)
         val conditionField = findViewById<TextView>(R.id.condition)
@@ -237,6 +279,9 @@ class MainActivity : AppCompatActivity() {
         windField.text = formatWindSpeed(weather!!.wind.speed)
     }
 
+    /**
+     * @return the weather, as saved in SharedPreferences
+     */
     private fun getLocalWeather(): Weather? {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -246,6 +291,10 @@ class MainActivity : AppCompatActivity() {
         return Weather.fromSharedPreferences(prefs, this)
     }
 
+    /**
+     * Set the background image
+     * @param cacheOnly whether to only load the image from cache
+     */
     private fun setImageBackground(cacheOnly: Boolean = false) {
         Glide.with(this)
             .load(imageUrl)
@@ -255,6 +304,9 @@ class MainActivity : AppCompatActivity() {
             .into(findViewById<ImageView>(R.id.imageView))
     }
 
+    /**
+     * Update the weather from the internet (from OpenWeatherMap).
+     */
     private fun getInternetWeather() {
         val place = this.newPlace ?: this.place
         val queue = Volley.newRequestQueue(this)
@@ -284,19 +336,29 @@ class MainActivity : AppCompatActivity() {
             },
             Response.ErrorListener { error ->
                 Log.e(TAG, "Weather request failed with error: $error")
-                // nothing happens if this does nothing, so we don't need to handle an error
-                // (there's still the edge case where it's not set up yet and getInternetWeather() fails)
+                // nothing happens if this does nothing, so we don't need to
+                // handle an error
+                // (there's still the edge case where it's not set up yet and
+                // getInternetWeather() fails. I've chosen to let it display a
+                // placeholder place for now)
             }
         )
         queue.add(request)
     }
 
+    /**
+     * Update the timezone of the TextClock based on the data returned by
+     * OpenWeatherMap
+     */
     private fun updateTimezone() {
         val textClock = findViewById<TextClock>(R.id.text_clock)
         val timezone = TimeZone.getAvailableIDs(weather!!.timezone * 1000)[0]
         textClock.setTimeZone(timezone)
     }
 
+    /**
+     * Update the format of the time based on the user-set preference
+     */
     private fun updateTimeFmt() {
         var prefs = PreferenceManager.getDefaultSharedPreferences(this)
         var timefmt = prefs.getString(getString(R.string.timefmt), "system")
@@ -314,11 +376,15 @@ class MainActivity : AppCompatActivity() {
             textClock.setFormat24Hour(TextClock.DEFAULT_FORMAT_24_HOUR)
         }
         else {
+            // Let the system decide
             textClock.setFormat12Hour(TextClock.DEFAULT_FORMAT_12_HOUR)
             textClock.setFormat24Hour(TextClock.DEFAULT_FORMAT_24_HOUR)
         }
     }
 
+    /**
+     * Get the place image and set it as the background, but only from cache.
+     */
     private fun getCachedPlaceImage() {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -331,6 +397,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Get the place image and set it as the background
+     */
     private fun getPlaceImage() {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -345,6 +414,10 @@ class MainActivity : AppCompatActivity() {
             getWikipediaImage()
     }
 
+    /**
+     * Get the Wikipedia article closest to the coordinates of the selected place.
+     * NOTE: this is not necessarily the article that the image is retrieved from
+     */
     private fun getPlaceWpArticle() {
         val queue = Volley.newRequestQueue(this)
         val geosearch_url = ("https://en.wikipedia.org/w/api.php"
@@ -379,6 +452,9 @@ class MainActivity : AppCompatActivity() {
         queue.add(geosearch_request)
     }
 
+    /**
+     * Get the best background image based on Wikipedia's geosearch API.
+     */
     private fun getWikipediaImage() {
         val queue = Volley.newRequestQueue(this)
         val pageimage_url = ("https://en.wikipedia.org/w/api.php"
@@ -429,6 +505,11 @@ class MainActivity : AppCompatActivity() {
         queue.add(pageimage_request)
     }
 
+    /**
+     * Remove the saved Wikipedia page.
+     * This prevents the app from using the previously saved Wikipedia article
+     * if getting a new one fails.
+     */
     private fun removeSavedWikipedia() {
         val prefs = getSharedPreferences(
             getString(R.string.weather_data_preference),
@@ -441,6 +522,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Format the temperature for display according to the user's preferences.
+     * @param temp the temperature in Kelvin
+     * @return the formatted temperature
+     */
     private fun formatTemp(temp: Float): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val units = prefs.getString(getString(R.string.units), "metric")
@@ -453,6 +539,11 @@ class MainActivity : AppCompatActivity() {
         return "${friendlyTemp.roundToInt()}°"
     }
 
+    /**
+     * Format the wind speed for display according to the user's preferences.
+     * @param windSpeed the wind speed in m/s
+     * @return the formatted wind speed
+     */
     private fun formatWindSpeed(windSpeed: Float): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val units = prefs.getString(getString(R.string.units), "metric")
