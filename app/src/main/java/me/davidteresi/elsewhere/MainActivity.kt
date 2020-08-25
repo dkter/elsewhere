@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
             this.weather = weather
             updatePlaceDisplay()
             updateWeatherDisplay()
+            updateTimezone()
             if (isNewDay())
                 this.newPlace = getRandomPlace()
             getInternetWeather()
