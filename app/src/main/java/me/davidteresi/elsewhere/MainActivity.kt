@@ -177,12 +177,12 @@ class MainActivity : AppCompatActivity() {
             resources.getColor(R.color.translucentWhite)
         }
 
-        // Remove bottom padding on CardView if we're on a system with a
+        // Remove most bottom padding on CardView if we're on a system with a
         // transparent gesture bar
         val cardView = view.findViewById<CardView>(R.id.cardView)
         if (hasTransparentGestureBar()) {
             val params = (cardView.layoutParams as MarginLayoutParams)
-            params.updateMargins(bottom = 0)
+            params.updateMargins(bottom = 2)
         }
     }
 
