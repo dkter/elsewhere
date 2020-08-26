@@ -29,6 +29,7 @@ import androidx.core.view.updateMargins
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -44,6 +45,43 @@ import java.util.Locale
 import java.util.TimeZone
 import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
+import org.json.JSONObject
+
+import me.davidteresi.elsewhere.util.StringPostRequest
+
+/**
+ * Make sure the URL is an HTTPS URL (i.e. starts with https://)
+ * Should only be used when the server is guaranteed to support HTTPS
+ * (and doesn't work without it)
+ */
+fun forceHttps(url: String): String {
+    if (url.startsWith("http:")) {
+        return url.substring(0, 4) + "s" + url.substring(4, url.length)
+    }
+    return url
+}
+
+/**
+ * Construct a SPARQl query to search Wikidata for images around the
+ * specified coordinates.
+ */
+fun constructSparqlQuery(lat: Float, lon: Float): String {
+    return """
+        SELECT ?image
+        WHERE
+        {
+          VALUES ?loc { "Point($lon $lat)"^^geo:wktLiteral } .
+          SERVICE wikibase:around {
+              ?place wdt:P625 ?location .
+              bd:serviceParam wikibase:center ?loc .
+              bd:serviceParam wikibase:radius "50" .
+          }
+          ?place wdt:P18 ?image .
+          BIND(geof:distance(?loc, ?location) as ?dist)
+        }
+        ORDER BY ?dist
+        LIMIT 1"""
+}
 
 class MainActivity : AppCompatActivity() {
     lateinit var place: Place
@@ -412,7 +450,7 @@ class MainActivity : AppCompatActivity() {
             setImageBackground()
         }
         else
-            getWikipediaImage()
+            getImageUrl()
     }
 
     /**
@@ -454,41 +492,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Get the best background image based on Wikipedia's geosearch API.
+     * Get the nearest image of a place from the Wikidata database.
      */
-    private fun getWikipediaImage() {
+    private fun getImageUrl() {
         val queue = Volley.newRequestQueue(this)
-        val pageimage_url = ("https://en.wikipedia.org/w/api.php"
-            + "?action=query"
-            + "&prop=coordinates|pageimages"
-            + "&generator=geosearch"
-            + "&ggscoord=${place.coord.lat}|${place.coord.lon}"
-            + "&ggsradius=10000"
-            + "&piprop=original"
-            + "&format=json"
-            + "&formatversion=2"
-        )
-        val pageimage_request = JsonObjectRequest(
-            Request.Method.GET, pageimage_url, null,
+        val wikidata_url = "https://query.wikidata.org/sparql?format=json"
+        val sparql_query = constructSparqlQuery(place.coord.lat, place.coord.lon)
+        val wikidata_request: StringRequest = StringPostRequest(
+            wikidata_url,
+            mapOf("query" to sparql_query),
             Response.Listener { response ->
                 val gson = Gson()
-                val result = gson.fromJson<WikipediaPageImageResult>(response.toString(), WikipediaPageImageResult::class.java)
-                val pages = result?.query?.pages
-
-                imageUrl = pages
-                    // Filter out SVG images (mostly maps, which we don't want)
-                    ?.filterNot { page -> page?.original?.isSvg() ?: true }
-                    // Prioritize JPEG images over PNGs, and prefer higher resolution images
-                    ?.sortedWith(compareBy(
-                        { page: WikipediaPageImagePage ->
-                            !(page.original?.isJpeg() ?: false)
-                        }, { page: WikipediaPageImagePage ->
-                            -(page.original?.height ?: 0)
-                        }
-                    ))
-                    ?.getOrNull(0)?.original?.source
+                val result = gson.fromJson<WikidataQueryResult>(response, WikidataQueryResult::class.java)
+                imageUrl = result?.results?.bindings?.getOrNull(0)?.image?.value
                 
                 if (imageUrl != null) {
+                    imageUrl = forceHttps(imageUrl!!)
                     val prefs = getSharedPreferences(
                         getString(R.string.weather_data_preference),
                         Context.MODE_PRIVATE
@@ -501,9 +520,10 @@ class MainActivity : AppCompatActivity() {
                 }
             },
             Response.ErrorListener { error ->
+                Log.e(TAG, "Error getting image: ${error.message}")
             }
         )
-        queue.add(pageimage_request)
+        queue.add(wikidata_request)
     }
 
     /**
