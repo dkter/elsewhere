@@ -55,5 +55,5 @@
     <string name="opensource_title">Source code</string>
     <string name="opensource_subtitle">Licensed under the Mozilla Public License</string>
     <string name="opensource_website">https://github.com/dkter/elsewhere</string>
-    <string name="sourcecredits">Weather data from OpenWeatherMap. Place images are sourced from Wikimedia Commons and queried using Wikipedia.</string>
+    <string name="sourcecredits">Weather data from OpenWeatherMap. Place images are sourced from Wikimedia Commons and queried using Wikidata.</string>
 </resources>

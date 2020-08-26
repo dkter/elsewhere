@@ -24,6 +24,6 @@ You can then build it normally.
 
 ## About
 Created by David Teresi.  
-Weather data is sourced from [OpenWeatherMap](https://openweathermap.org). Place images are collected using [Wikipedia](https://wikipedia.org/).
+Weather data is sourced from [OpenWeatherMap](https://openweathermap.org). Place images are from [Wikimedia Commons](https://commons.wikimedia.org) and collected using [Wikidata](https://wikidata.org/).
 
 Licensed under the Mozilla Public License. For more information see [LICENSE.txt](LICENSE.txt).
