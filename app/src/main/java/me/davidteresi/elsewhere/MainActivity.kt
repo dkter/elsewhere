@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
             updatePlaceDisplay()
             updateWeatherDisplay()
             updateTimezone()
-            if (isNewDay())
+            if (prefs.isNewDay(this))
                 this.newPlace = getRandomPlace()
             getInternetWeather()
         }
@@ -217,50 +217,6 @@ class MainActivity : AppCompatActivity() {
     private fun showChipGroup() {
         val chipGroup = findViewById<ChipGroup>(R.id.chipGroup)
         chipGroup.setVisibility(View.VISIBLE)
-    }
-
-    /**
-     * Get the current date
-     * @return the current date in yyyy-MM-dd format
-     */
-    private fun getToday(): String {
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        val today = format.format(Calendar.getInstance().time)
-        return today
-    }
-
-    /**
-     * @return true if the day has changed since it was last saved
-     */
-    private fun isNewDay(): Boolean {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        )
-
-        val savedDay = prefs?.getString(getString(R.string.weather_data_day), null)
-
-        val today = getToday()
-        if (savedDay != null && today == savedDay!!)
-            return false
-        else
-            return true
-    }
-
-    /**
-     * Save the current date in SharedPreferences
-     */
-    private fun saveToday() {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        )
-        val today = getToday()
-
-        with (prefs.edit()) {
-            putString(getString(R.string.weather_data_day), today)
-            apply()
-        }
     }
 
     /**
@@ -353,7 +309,7 @@ class MainActivity : AppCompatActivity() {
                     this.newPlace = null
                     removeSavedWikipedia()
                 }
-                saveToday()
+                prefs.saveToday(this)
                 updateTimezone()
                 updatePlaceDisplay()
                 updateWeatherDisplay()
