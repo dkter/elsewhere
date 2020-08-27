@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.preference.PreferenceManager
+import androidx.work.WorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -43,6 +46,7 @@ import com.google.gson.stream.JsonReader
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import java.util.concurrent.TimeUnit
 import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 import org.json.JSONObject
@@ -101,6 +105,11 @@ class MainActivity : AppCompatActivity() {
 
         wikipediaChip.setOnClickListener { onWikipediaChipClick() }
         mapChip.setOnClickListener { onMapChipClick() }
+
+        val weatherUpdateWorkRequest: WorkRequest = 
+            PeriodicWorkRequestBuilder<WeatherUpdateWorker>(10, TimeUnit.MINUTES)
+                .build()
+        WorkManager.getInstance(this).enqueue(weatherUpdateWorkRequest)
     }
 
     override fun onResume() {
