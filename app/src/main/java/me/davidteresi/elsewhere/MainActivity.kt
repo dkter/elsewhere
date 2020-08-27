@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.preference.PreferenceManager
 import androidx.work.WorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import android.content.Context
 import android.content.Intent
@@ -106,10 +107,13 @@ class MainActivity : AppCompatActivity() {
         wikipediaChip.setOnClickListener { onWikipediaChipClick() }
         mapChip.setOnClickListener { onMapChipClick() }
 
-        val weatherUpdateWorkRequest: WorkRequest = 
+        val weatherUpdateWorkRequest = 
             PeriodicWorkRequestBuilder<WeatherUpdateWorker>(10, TimeUnit.MINUTES)
                 .build()
-        WorkManager.getInstance(this).enqueue(weatherUpdateWorkRequest)
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "WeatherUpdateWorker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            weatherUpdateWorkRequest)
     }
 
     override fun onResume() {
