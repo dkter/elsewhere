@@ -374,7 +374,7 @@ class MainActivity : AppCompatActivity() {
                 getPlaceWpArticle()
             },
             Response.ErrorListener { error ->
-                Log.e(TAG, "Weather request failed with error: $error")
+                Log.e(TAG, "Error getting weather: $error")
                 // nothing happens if this does nothing, so we don't need to
                 // handle an error
                 // (there's still the edge case where it's not set up yet and
@@ -486,6 +486,7 @@ class MainActivity : AppCompatActivity() {
                 }
             },
             Response.ErrorListener { error ->
+                Log.e(TAG, "Error getting Wikipedia article: $error")
             }
         )
         queue.add(geosearch_request)
@@ -520,7 +521,7 @@ class MainActivity : AppCompatActivity() {
                 }
             },
             Response.ErrorListener { error ->
-                Log.e(TAG, "Error getting image: ${error.message}")
+                Log.e(TAG, "Error getting image: $error")
             }
         )
         queue.add(wikidata_request)
