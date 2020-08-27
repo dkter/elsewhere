@@ -18,7 +18,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
     Worker(appContext, workerParams) {
 
     override fun doWork(): Result {
-        val place = getPlace()
+        val place = prefs.getPlace(appContext)
 
         Log.d("WeatherUpdateWorker", "Refreshing weather")
 
@@ -42,17 +42,5 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
         else {
             return Result.failure()
         }
-    }
-
-    /**
-     * Get the current place from SharedPreferences
-     */
-    private fun getPlace(): Place? {
-        val prefs = appContext.getSharedPreferences(
-            appContext.getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        ) ?: return null
-
-        return Place.fromSharedPreferences(prefs, appContext)
     }
 }

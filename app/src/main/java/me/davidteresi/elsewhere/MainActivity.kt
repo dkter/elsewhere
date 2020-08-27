@@ -152,8 +152,8 @@ class MainActivity : AppCompatActivity() {
     private fun refresh() {
         updateTimeFmt()
         getCachedPlaceImage()
-        val place = getLocalPlace()
-        val weather = getLocalWeather()
+        val place = prefs.getPlace(this)
+        val weather = prefs.getWeather(this)
         if (weather != null && place != null) {
             showChipGroup()
             this.place = place
@@ -296,18 +296,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Get the current place from SharedPreferences
-     */
-    private fun getLocalPlace(): Place? {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        ) ?: return null
-
-        return Place.fromSharedPreferences(prefs, this)
-    }
-
-    /**
      * @return a random place from the OpenWeatherMap place list
      */
     private fun getRandomPlace(): Place {
@@ -329,18 +317,6 @@ class MainActivity : AppCompatActivity() {
         conditionField.text = weather!!.weather[0].description
         humidityField.text = getString(R.string.humidity, weather!!.main.humidity.roundToInt())
         windField.text = formatWindSpeed(weather!!.wind.speed)
-    }
-
-    /**
-     * @return the weather, as saved in SharedPreferences
-     */
-    private fun getLocalWeather(): Weather? {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        ) ?: return null
-
-        return Weather.fromSharedPreferences(prefs, this)
     }
 
     /**
