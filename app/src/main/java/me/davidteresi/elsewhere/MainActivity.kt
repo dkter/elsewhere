@@ -96,6 +96,10 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
+    companion object {
+        var maybeGettingNewPlace = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -162,8 +166,10 @@ class MainActivity : AppCompatActivity() {
             updatePlaceDisplay()
             updateWeatherDisplay()
             updateTimezone()
-            if (prefs.isNewDay(this))
+            if (prefs.isNewDay(this)) {
+                maybeGettingNewPlace = true
                 this.newPlace = util.getRandomPlace(this)
+            }
             getInternetWeather()
         }
         else {
@@ -280,6 +286,7 @@ class MainActivity : AppCompatActivity() {
                 if (this.newPlace != null) {
                     this.place = this.newPlace!!
                     this.newPlace = null
+                    maybeGettingNewPlace = false
                     removeSavedWikipedia()
                 }
                 prefs.saveToday(this)

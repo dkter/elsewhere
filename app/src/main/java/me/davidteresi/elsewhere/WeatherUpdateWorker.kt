@@ -32,9 +32,12 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
     Worker(appContext, workerParams) {
 
     override fun doWork(): WorkerResult {
-        val isNewDay = prefs.isNewDay(appContext)
-        val place = if (isNewDay)
+        val isNewDay = (prefs.isNewDay(appContext)
+            && !MainActivity.maybeGettingNewPlace)
+        val place = if (isNewDay) {
+            MainActivity.maybeGettingNewPlace = true
             util.getRandomPlace(appContext)
+        }
         else
             prefs.getPlace(appContext)
 
@@ -55,6 +58,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
             // Since everything was successful, save the new place
             place.saveSharedPreferences(appContext)
             prefs.saveToday(appContext)
+            MainActivity.maybeGettingNewPlace = false
         }
         return WorkerResult.success()
     }
