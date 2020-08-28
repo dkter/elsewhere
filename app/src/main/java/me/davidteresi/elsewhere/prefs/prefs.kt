@@ -1,12 +1,12 @@
 package prefs
 
 import android.content.Context
+import java.util.Calendar
+import java.text.SimpleDateFormat
 
 import me.davidteresi.elsewhere.R
 import me.davidteresi.elsewhere.Place
 import me.davidteresi.elsewhere.Weather
-import java.util.Calendar
-import java.text.SimpleDateFormat
 
 
 /**
