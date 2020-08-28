@@ -108,7 +108,8 @@ class MainActivity : AppCompatActivity() {
         mapChip.setOnClickListener { onMapChipClick() }
 
         val weatherUpdateWorkRequest = 
-            PeriodicWorkRequestBuilder<WeatherUpdateWorker>(10, TimeUnit.MINUTES)
+            PeriodicWorkRequestBuilder<WeatherUpdateWorker>(15, TimeUnit.MINUTES)
+                .setInitialDelay(15, TimeUnit.MINUTES)
                 .build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "WeatherUpdateWorker",
@@ -162,11 +163,11 @@ class MainActivity : AppCompatActivity() {
             updateWeatherDisplay()
             updateTimezone()
             if (prefs.isNewDay(this))
-                this.newPlace = getRandomPlace()
+                this.newPlace = util.getRandomPlace(this)
             getInternetWeather()
         }
         else {
-            this.place = getRandomPlace()
+            this.place = util.getRandomPlace(this)
             getInternetWeather()
         }
     }
@@ -230,34 +231,6 @@ class MainActivity : AppCompatActivity() {
             place.name,
             country.getDisplayCountry()
         )
-    }
-
-    /**
-     * Load the list of OpenWeatherMap places into memory
-     */
-    private fun loadPlaces(): List<Place> {
-        var placeList = ArrayList<Place>()
-        val jsonFile = resources.openRawResource(R.raw.cities)
-        val jsonReader = JsonReader(jsonFile.bufferedReader())
-        val gson = GsonBuilder().create()
-
-        jsonReader.beginArray()
-        while (jsonReader.hasNext()) {
-            val currentPlace = gson.fromJson<Place>(jsonReader, Place::class.java)
-            placeList.add(currentPlace)
-        }
-        jsonReader.endArray()
-
-        return placeList
-    }
-
-    /**
-     * @return a random place from the OpenWeatherMap place list
-     */
-    private fun getRandomPlace(): Place {
-        val places = loadPlaces()
-        val randomPlaceIndex = places.indices.random()
-        return places[randomPlaceIndex]
     }
 
     /**
