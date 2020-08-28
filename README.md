@@ -1,7 +1,7 @@
 # Elsewhere
 *The weather app that tells you the weather where you aren't*
 
-<img alt="Screenshot of Elsewhere showing the weather in Montreuil-sous-Pérouse, France" src="assets/screenshots/montreuil-sous-perouse.png" height=500 /><img alt="Screenshot of Elsewhere showing the weather in Brateiu, Austria" src="assets/screenshots/brateiu.png" height=500 /><img alt="Screenshot of Elsewhere showing the weather in Golenishchevo, Russia" src="assets/screenshots/golenishchevo.png" height=500 />
+<img alt="Screenshot of Elsewhere showing the weather in Corinto, Brazil" src="assets/screenshots/corinto.png" height=500 /><img alt="Screenshot of Elsewhere showing the weather in Brateiu, Romania" src="assets/screenshots/brateiu.png" height=500 /><img alt="Screenshot of Elsewhere showing the weather in Dapdap, Philippines" src="assets/screenshots/dapdap.png" height=500 />
 
 Every day, Elsewhere gives you the weather in another random location in the world.
 
