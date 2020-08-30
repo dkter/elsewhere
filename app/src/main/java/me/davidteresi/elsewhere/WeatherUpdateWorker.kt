@@ -40,18 +40,26 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
             prefs.getPlace(appContext)
 
         val weatherResult = refreshWeather(place)
-        if (weatherResult == ResultEnum.FAILURE)
+        if (weatherResult == ResultEnum.FAILURE) {
+            MainActivity.maybeGettingNewPlace = false
             return WorkerResult.failure()
-        else if (weatherResult == ResultEnum.RETRY)
+        }
+        else if (weatherResult == ResultEnum.RETRY) {
+            MainActivity.maybeGettingNewPlace = false
             return WorkerResult.retry()
+        }
 
         if (isNewDay) {
             // Get a new image for the place
             val imageResult = loadImage(place!!)
-            if (imageResult == ResultEnum.FAILURE)
+            if (imageResult == ResultEnum.FAILURE) {
+                MainActivity.maybeGettingNewPlace = false
                 return WorkerResult.failure()
-            else if (imageResult == ResultEnum.RETRY)
+            }
+            else if (imageResult == ResultEnum.RETRY) {
+                MainActivity.maybeGettingNewPlace = false
                 return WorkerResult.retry()
+            }
 
             // Since everything was successful, save the new place
             place.saveSharedPreferences(appContext)
