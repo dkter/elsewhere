@@ -419,14 +419,7 @@ class MainActivity : AppCompatActivity() {
                 
                 if (imageUrl != null) {
                     imageUrl = forceHttps(imageUrl!!)
-                    val prefs = getSharedPreferences(
-                        getString(R.string.weather_data_preference),
-                        Context.MODE_PRIVATE
-                    )
-                    with (prefs.edit()) {
-                        putString(getString(R.string.weather_data_image_url), imageUrl)
-                        apply()
-                    }
+                    prefs.saveImageUrl(this, imageUrl!!)
                     setImageBackground()
                 }
             },

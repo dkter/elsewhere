@@ -34,6 +34,20 @@ fun getWeather(context: Context): Weather? {
 }
 
 /**
+ * Save the current image URL
+ */
+fun saveImageUrl(context: Context, url: String) {
+    val prefs = context.getSharedPreferences(
+        context.getString(R.string.weather_data_preference),
+        Context.MODE_PRIVATE
+    )
+    with (prefs.edit()) {
+        putString(context.getString(R.string.weather_data_image_url), url)
+        apply()
+    }
+}
+
+/**
  * @return true if the day has changed since it was last saved
  */
 fun isNewDay(context: Context): Boolean {

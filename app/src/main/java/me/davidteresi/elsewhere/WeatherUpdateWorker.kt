@@ -129,9 +129,11 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
 
         try {
             future.get()
-            return ResultEnum.SUCCESS
         } catch (e: Exception) {
             return ResultEnum.FAILURE
         }
+        // it was successful, so save the image URL
+        prefs.saveImageUrl(appContext, imageUrl)
+        return ResultEnum.SUCCESS
     }
 }
