@@ -38,6 +38,7 @@ import com.bumptech.glide.request.RequestListener
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.Gson
+import java.io.IOException
 import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
@@ -90,6 +91,7 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private lateinit var stateManager: PrefStateManager
     private lateinit var placeDataSource: PlaceDataSource
+    private val httpClient = okhttp3.OkHttpClient()
 
     companion object {
         var maybeGettingNewPlace = false
@@ -317,26 +319,33 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getInternetWeather() {
         val place = this.newPlace ?: this.place
-        val queue = Volley.newRequestQueue(this)
-        val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=${BuildConfig.OWM_KEY}"
-        val request = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            Response.Listener { response ->
-                val gson = Gson()
-                weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
-                refreshUi()
-            },
-            Response.ErrorListener { error ->
+        val url = okhttp3.HttpUrl.Builder()
+            .scheme("https")
+            .host("api.openweathermap.org")
+            .addPathSegment("data")
+            .addPathSegment("2.5")
+            .addPathSegment("weather")
+            .addQueryParameter("id", place.id.toString())
+            .addQueryParameter("appid", BuildConfig.OWM_KEY)
+            .build()
+        val request = okhttp3.Request.Builder().url(url).build()
+
+        httpClient.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
                 maybeGettingNewPlace = false
-                Log.e(TAG, "Error getting weather: $error")
-                // nothing happens if this does nothing, so we don't need to
-                // handle an error
-                // (there's still the edge case where it's not set up yet and
-                // getInternetWeather() fails. I've chosen to let it display a
-                // placeholder place for now)
+                Log.e(TAG, "Error getting weather: $e")
             }
-        )
-        queue.add(request)
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                response.use {
+                    if (!response.isSuccessful)
+                        throw IOException("Unexpected code $response")
+
+                    val gson = Gson()
+                    weather = gson.fromJson<Weather>(response.body!!.string(), Weather::class.java)
+                    runOnUiThread { refreshUi() }
+                }
+            }
+        })
     }
 
     /**
