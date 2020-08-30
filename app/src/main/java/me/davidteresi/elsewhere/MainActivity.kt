@@ -95,8 +95,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        stateManager = PrefStateManager(this)
-        placeDataSource = PlaceDataSource(this)
+        stateManager = (application as ElsewhereApp).stateManager
+        placeDataSource = (application as ElsewhereApp).placeDataSource
 
         setSystemBarStyles()
 
@@ -315,7 +315,7 @@ class MainActivity : AppCompatActivity() {
         val place = this.newPlace ?: this.place
         val url = okhttp3.HttpUrl.Builder()
             .scheme("https")
-            .host("api.openweathermap.org")
+            .host((application as ElsewhereApp).owmHost)
             .addPathSegment("data")
             .addPathSegment("2.5")
             .addPathSegment("weather")
@@ -409,7 +409,7 @@ class MainActivity : AppCompatActivity() {
     private fun getPlaceWpArticle() {
         val url = okhttp3.HttpUrl.Builder()
             .scheme("https")
-            .host("en.wikipedia.org")
+            .host((application as ElsewhereApp).wikipediaHost)
             .addPathSegment("w")
             .addPathSegment("api.php")
             .addQueryParameter("action", "query")
@@ -450,7 +450,7 @@ class MainActivity : AppCompatActivity() {
     private fun getImageUrl() {
         val url = okhttp3.HttpUrl.Builder()
             .scheme("https")
-            .host("query.wikidata.org")
+            .host((application as ElsewhereApp).wikidataHost)
             .addPathSegment("sparql")
             .addQueryParameter("format", "json")
             .build()

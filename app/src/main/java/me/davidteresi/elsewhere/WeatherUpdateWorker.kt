@@ -25,8 +25,9 @@ enum class ResultEnum {
 class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameters):
     Worker(appContext, workerParams) {
 
-    private val stateManager = PrefStateManager(appContext)
-    private val placeDataSource = PlaceDataSource(appContext)
+    private val application = appContext.getApplicationContext()
+    private val stateManager = (application as ElsewhereApp).stateManager
+    private val placeDataSource = (application as ElsewhereApp).placeDataSource
     private val httpClient = okhttp3.OkHttpClient()
 
     override fun doWork(): WorkerResult {
@@ -75,7 +76,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
         if (place != null) {
             val url = okhttp3.HttpUrl.Builder()
                 .scheme("https")
-                .host("api.openweathermap.org")
+                .host((application as ElsewhereApp).owmHost)
                 .addPathSegment("data")
                 .addPathSegment("2.5")
                 .addPathSegment("weather")
@@ -104,7 +105,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
 
         val url = okhttp3.HttpUrl.Builder()
             .scheme("https")
-            .host("query.wikidata.org")
+            .host((application as ElsewhereApp).wikidataHost)
             .addPathSegment("sparql")
             .addQueryParameter("format", "json")
             .build()
