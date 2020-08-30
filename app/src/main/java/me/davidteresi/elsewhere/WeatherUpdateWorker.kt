@@ -5,11 +5,6 @@ import androidx.work.WorkerParameters
 import androidx.work.ListenableWorker.Result as WorkerResult
 import android.content.Context
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.Volley
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.RequestFuture
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target
@@ -17,7 +12,6 @@ import com.google.gson.Gson
 import java.util.concurrent.TimeUnit
 import org.json.JSONObject
 
-import me.davidteresi.elsewhere.util.StringPostRequest
 import me.davidteresi.elsewhere.util.PlaceDataSource
 import me.davidteresi.elsewhere.prefs.PrefStateManager
 
