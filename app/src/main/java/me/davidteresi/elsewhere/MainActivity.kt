@@ -282,6 +282,9 @@ class MainActivity : AppCompatActivity() {
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.default_bg)
             .listener(object : RequestListener<Drawable> {
+                // these two methods return false to tell Glide that they
+                // didn't handle putting the image in the ImageView and that
+                // Glide should do it. it's pretty vague, i know
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
