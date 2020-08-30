@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun refresh() {
         updateTimeFmt()
-        getCachedPlaceImage()
+        setCachedPlaceImage()
         val place = stateManager.getPlace()
         val weather = stateManager.getWeather()
         if (weather != null && place != null) {
@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity() {
                 updateWeatherDisplay()
                 place.saveSharedPreferences(this)
                 weather!!.saveSharedPreferences(this)
-                getPlaceImage()
+                setPlaceImage()
                 getPlaceWpArticle()
             },
             Response.ErrorListener { error ->
@@ -335,7 +335,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Get the place image and set it as the background, but only from cache.
      */
-    private fun getCachedPlaceImage() {
+    private fun setCachedPlaceImage() {
         val url = stateManager.getPlaceImageUrl()
         if (url != null) {
             imageUrl = url
@@ -346,7 +346,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Get the place image and set it as the background
      */
-    private fun getPlaceImage() {
+    private fun setPlaceImage() {
         val url = stateManager.getPlaceImageUrl()
         if (url != null) {
             imageUrl = url
