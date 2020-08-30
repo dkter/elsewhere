@@ -59,7 +59,7 @@ fun forceHttps(url: String): String {
 }
 
 /**
- * Construct a SPARQl query to search Wikidata for images around the
+ * Construct a SPARQL query to search Wikidata for images around the
  * specified coordinates.
  */
 fun constructSparqlQuery(lat: Float, lon: Float): String {
