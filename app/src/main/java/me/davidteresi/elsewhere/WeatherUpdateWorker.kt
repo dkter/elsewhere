@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 import org.json.JSONObject
 
 import me.davidteresi.elsewhere.util.StringPostRequest
+import me.davidteresi.elsewhere.util.PlaceDataSource
 import me.davidteresi.elsewhere.prefs.PrefStateManager
 
 // apparently I can't name this Result even though I gave
@@ -31,13 +32,14 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
     Worker(appContext, workerParams) {
 
     private val stateManager = PrefStateManager(appContext)
+    private val placeDataSource = PlaceDataSource(appContext)
 
     override fun doWork(): WorkerResult {
         val isNewDay = (stateManager.isNewDay()
             && !MainActivity.maybeGettingNewPlace)
         val place = if (isNewDay) {
             MainActivity.maybeGettingNewPlace = true
-            util.getRandomPlace(appContext)
+            placeDataSource.getRandomPlace()
         }
         else
             stateManager.getPlace()

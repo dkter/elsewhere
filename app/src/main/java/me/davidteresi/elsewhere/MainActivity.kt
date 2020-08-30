@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 import me.davidteresi.elsewhere.util.StringPostRequest
+import me.davidteresi.elsewhere.util.PlaceDataSource
 import me.davidteresi.elsewhere.prefs.PrefStateManager
 
 /**
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
     private lateinit var stateManager: PrefStateManager
+    private lateinit var placeDataSource: PlaceDataSource
 
     companion object {
         var maybeGettingNewPlace = false
@@ -98,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         stateManager = PrefStateManager(this)
+        placeDataSource = PlaceDataSource(this)
 
         setSystemBarStyles()
 
@@ -160,12 +163,12 @@ class MainActivity : AppCompatActivity() {
             updateTimezone()
             if (stateManager.isNewDay()) {
                 maybeGettingNewPlace = true
-                this.newPlace = util.getRandomPlace(this)
+                this.newPlace = placeDataSource.getRandomPlace()
             }
             getInternetWeather()
         }
         else {
-            this.place = util.getRandomPlace(this)
+            this.place = placeDataSource.getRandomPlace()
             getInternetWeather()
         }
     }
