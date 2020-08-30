@@ -454,28 +454,45 @@ class MainActivity : AppCompatActivity() {
      * Get the nearest image of a place from the Wikidata database.
      */
     private fun getImageUrl() {
-        val queue = Volley.newRequestQueue(this)
-        val wikidata_url = "https://query.wikidata.org/sparql?format=json"
-        val sparql_query = constructSparqlQuery(place.coord.lat, place.coord.lon)
-        val wikidata_request: StringRequest = StringPostRequest(
-            wikidata_url,
-            mapOf("query" to sparql_query),
-            Response.Listener { response ->
-                val gson = Gson()
-                val result = gson.fromJson<WikidataQueryResult>(response, WikidataQueryResult::class.java)
-                imageUrl = result?.results?.bindings?.getOrNull(0)?.image?.value
-                
-                if (imageUrl != null) {
-                    imageUrl = forceHttps(imageUrl!!)
-                    stateManager.saveImageUrl(imageUrl!!)
-                    setImageBackground()
-                }
-            },
-            Response.ErrorListener { error ->
-                Log.e(TAG, "Error getting image: $error")
+        val url = okhttp3.HttpUrl.Builder()
+            .scheme("https")
+            .host("query.wikidata.org")
+            .addPathSegment("sparql")
+            .addQueryParameter("format", "json")
+            .build()
+        val sparqlQuery = constructSparqlQuery(place.coord.lat, place.coord.lon)
+        val params = okhttp3.FormBody.Builder()
+            .add("query", sparqlQuery)
+            .build()
+        val request = okhttp3.Request.Builder()
+            .url(url)
+            .post(params)
+            .build()
+
+        httpClient.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Log.e(TAG, "Error getting image URL: $e")
             }
-        )
-        queue.add(wikidata_request)
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                response.use {
+                    if (!response.isSuccessful)
+                        throw IOException("Unexpected code $response")
+
+                    val gson = Gson()
+                    val result = gson.fromJson<WikidataQueryResult>(
+                        response.body!!.string(),
+                        WikidataQueryResult::class.java)
+                    imageUrl = result?.results?.bindings?.getOrNull(0)?.image?.value
+                    
+                    if (imageUrl != null) {
+                        imageUrl = forceHttps(imageUrl!!)
+                        stateManager.saveImageUrl(imageUrl!!)
+
+                        runOnUiThread { setImageBackground() }
+                    }
+                }
+            }
+        })
     }
 
     /**
