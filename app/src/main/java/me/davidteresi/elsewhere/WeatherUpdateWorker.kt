@@ -108,27 +108,33 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
     private fun loadImage(place: Place): ResultEnum {
         Log.d("WeatherUpdateWorker", "Loading place image")
 
-        val queue = Volley.newRequestQueue(appContext)
-        val wikidata_url = "https://query.wikidata.org/sparql?format=json"
-        val sparql_query = constructSparqlQuery(place.coord.lat, place.coord.lon)
-        val future: RequestFuture<String> = RequestFuture.newFuture()
-        val wikidata_request: StringRequest = StringPostRequest(
-            wikidata_url,
-            mapOf("query" to sparql_query),
-            future,
-            future
-        )
-        queue.add(wikidata_request)
+        val url = okhttp3.HttpUrl.Builder()
+            .scheme("https")
+            .host("query.wikidata.org")
+            .addPathSegment("sparql")
+            .addQueryParameter("format", "json")
+            .build()
+        val sparqlQuery = constructSparqlQuery(place.coord.lat, place.coord.lon)
+        val params = okhttp3.FormBody.Builder()
+            .add("query", sparqlQuery)
+            .build()
+        val request = okhttp3.Request.Builder()
+            .url(url)
+            .post(params)
+            .build()
 
-        try {
-            val response = future.get(45, TimeUnit.SECONDS)
+        httpClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful)
+                return ResultEnum.FAILURE
+
             val gson = Gson()
-            val result = gson.fromJson<WikidataQueryResult>(response, WikidataQueryResult::class.java)
+            val result = gson.fromJson<WikidataQueryResult>(
+                response.body!!.string(),
+                WikidataQueryResult::class.java)
             val imageUrl = result?.results?.bindings?.getOrNull(0)?.image?.value
             return cacheImage(forceHttps(imageUrl!!))
-        } catch (e: Exception) {
-            return ResultEnum.FAILURE
         }
+        return ResultEnum.FAILURE
     }
 
     private fun cacheImage(imageUrl: String): ResultEnum {
