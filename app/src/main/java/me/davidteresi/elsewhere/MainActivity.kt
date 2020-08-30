@@ -413,31 +413,41 @@ class MainActivity : AppCompatActivity() {
      * NOTE: this is not necessarily the article that the image is retrieved from
      */
     private fun getPlaceWpArticle() {
-        val queue = Volley.newRequestQueue(this)
-        val geosearch_url = ("https://en.wikipedia.org/w/api.php"
-            + "?action=query"
-            + "&list=geosearch"
-            + "&gscoord=${place.coord.lat}|${place.coord.lon}"
-            + "&gsradius=10000"
-            + "&gslimit=1"
-            + "&format=json"
-        )
-        val geosearch_request = JsonObjectRequest(
-            Request.Method.GET, geosearch_url, null,
-            Response.Listener { response ->
-                val gson = Gson()
-                val result = gson.fromJson<WikipediaGeosearchResult>(response.toString(), WikipediaGeosearchResult::class.java)
-                val title = result?.query?.geosearch?.getOrNull(0)?.title
+        val url = okhttp3.HttpUrl.Builder()
+            .scheme("https")
+            .host("en.wikipedia.org")
+            .addPathSegment("w")
+            .addPathSegment("api.php")
+            .addQueryParameter("action", "query")
+            .addQueryParameter("list", "geosearch")
+            .addQueryParameter("gscoord", "${place.coord.lat}|${place.coord.lon}")
+            .addQueryParameter("gsradius", "10000")
+            .addQueryParameter("gslimit", "1")
+            .addQueryParameter("format", "json")
+            .build()
+        val request = okhttp3.Request.Builder().url(url).build()
 
-                if (title != null) {
-                    stateManager.saveWikipediaTitle(title)
-                }
-            },
-            Response.ErrorListener { error ->
-                Log.e(TAG, "Error getting Wikipedia article: $error")
+        httpClient.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Log.e(TAG, "Error getting Wikipedia article: $e")
             }
-        )
-        queue.add(geosearch_request)
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                response.use {
+                    if (!response.isSuccessful)
+                        throw IOException("Unexpected code $response")
+
+                    val gson = Gson()
+                    val result = gson.fromJson<WikipediaGeosearchResult>(
+                        response.body!!.string(),
+                        WikipediaGeosearchResult::class.java)
+                    val title = result?.query?.geosearch?.getOrNull(0)?.title
+
+                    if (title != null) {
+                        stateManager.saveWikipediaTitle(title)
+                    }
+                }
+            }
+        })
     }
 
     /**
