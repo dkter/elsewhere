@@ -33,6 +33,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
 
     private val stateManager = PrefStateManager(appContext)
     private val placeDataSource = PlaceDataSource(appContext)
+    private val httpClient = okhttp3.OkHttpClient()
 
     override fun doWork(): WorkerResult {
         val isNewDay = (stateManager.isNewDay()
@@ -78,25 +79,30 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
         Log.d("WeatherUpdateWorker", "Refreshing weather")
 
         if (place != null) {
-            val queue = Volley.newRequestQueue(appContext)
-            val future: RequestFuture<JSONObject> = RequestFuture.newFuture()
-            val url = "https://api.openweathermap.org/data/2.5/weather?id=${place.id}&appid=${BuildConfig.OWM_KEY}"
-            val request = JsonObjectRequest(Request.Method.GET, url, null, future, future)
-            queue.add(request)
+            val url = okhttp3.HttpUrl.Builder()
+                .scheme("https")
+                .host("api.openweathermap.org")
+                .addPathSegment("data")
+                .addPathSegment("2.5")
+                .addPathSegment("weather")
+                .addQueryParameter("id", place.id.toString())
+                .addQueryParameter("appid", BuildConfig.OWM_KEY)
+                .build()
+            val request = okhttp3.Request.Builder().url(url).build()
 
-            try {
-                val response = future.get(45, TimeUnit.SECONDS)
+            httpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful)
+                    return ResultEnum.FAILURE
+
                 val gson = Gson()
-                val weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
+                val weather = gson.fromJson<Weather>(
+                    response.body!!.string(),
+                    Weather::class.java)
                 weather.saveSharedPreferences(appContext)
                 return ResultEnum.SUCCESS
-            } catch (e: Exception) {
-                return ResultEnum.FAILURE
             }
         }
-        else {
-            return ResultEnum.FAILURE
-        }
+        return ResultEnum.FAILURE
     }
 
     private fun loadImage(place: Place): ResultEnum {
