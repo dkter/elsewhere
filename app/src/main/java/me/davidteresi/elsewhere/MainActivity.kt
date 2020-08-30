@@ -165,6 +165,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Refresh the UI -- usually only called after a successful weather update
+     */
+    private fun refreshUi() {
+        showChipGroup()
+
+        if (this.newPlace != null) {
+            this.place = this.newPlace!!
+            this.newPlace = null
+            maybeGettingNewPlace = false
+            stateManager.removeSavedWikipedia()
+        }
+
+        stateManager.saveToday()
+        updateTimezone()
+        updatePlaceDisplay()
+        updateWeatherDisplay()
+        place.saveSharedPreferences(this)
+        weather!!.saveSharedPreferences(this)
+        setPlaceImage()
+        getPlaceWpArticle()
+    }
+
+    /**
      * Styles the status bar and navigation bar.
      * The status bar should always be translucentWhite. The navbar
      * should have the default translucent style, unless it's a gesture
@@ -263,26 +286,9 @@ class MainActivity : AppCompatActivity() {
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
-                showChipGroup()
-
                 val gson = Gson()
                 weather = gson.fromJson<Weather>(response.toString(), Weather::class.java)
-                
-                // update everything only if getInternetWeather() succeeds
-                if (this.newPlace != null) {
-                    this.place = this.newPlace!!
-                    this.newPlace = null
-                    maybeGettingNewPlace = false
-                    stateManager.removeSavedWikipedia()
-                }
-                stateManager.saveToday()
-                updateTimezone()
-                updatePlaceDisplay()
-                updateWeatherDisplay()
-                place.saveSharedPreferences(this)
-                weather!!.saveSharedPreferences(this)
-                setPlaceImage()
-                getPlaceWpArticle()
+                refreshUi()
             },
             Response.ErrorListener { error ->
                 maybeGettingNewPlace = false
