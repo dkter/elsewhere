@@ -285,6 +285,7 @@ class MainActivity : AppCompatActivity() {
                 getPlaceWpArticle()
             },
             Response.ErrorListener { error ->
+                maybeGettingNewPlace = false
                 Log.e(TAG, "Error getting weather: $error")
                 // nothing happens if this does nothing, so we don't need to
                 // handle an error
