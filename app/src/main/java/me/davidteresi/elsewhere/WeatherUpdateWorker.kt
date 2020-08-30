@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 import org.json.JSONObject
 
 import me.davidteresi.elsewhere.util.StringPostRequest
+import me.davidteresi.elsewhere.prefs.PrefStateManager
 
 // apparently I can't name this Result even though I gave
 // ListenableWorker.Result a different name in the import. this language is
@@ -29,15 +30,17 @@ enum class ResultEnum {
 class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameters):
     Worker(appContext, workerParams) {
 
+    private val stateManager = PrefStateManager(appContext)
+
     override fun doWork(): WorkerResult {
-        val isNewDay = (prefs.isNewDay(appContext)
+        val isNewDay = (stateManager.isNewDay()
             && !MainActivity.maybeGettingNewPlace)
         val place = if (isNewDay) {
             MainActivity.maybeGettingNewPlace = true
             util.getRandomPlace(appContext)
         }
         else
-            prefs.getPlace(appContext)
+            stateManager.getPlace()
 
         val weatherResult = refreshWeather(place)
         if (weatherResult == ResultEnum.FAILURE) {
@@ -63,7 +66,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
 
             // Since everything was successful, save the new place
             place.saveSharedPreferences(appContext)
-            prefs.saveToday(appContext)
+            stateManager.saveToday()
             MainActivity.maybeGettingNewPlace = false
         }
         return WorkerResult.success()
@@ -133,7 +136,7 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
             return ResultEnum.FAILURE
         }
         // it was successful, so save the image URL
-        prefs.saveImageUrl(appContext, imageUrl)
+        stateManager.saveImageUrl(imageUrl)
         return ResultEnum.SUCCESS
     }
 }

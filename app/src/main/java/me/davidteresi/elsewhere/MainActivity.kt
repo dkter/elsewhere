@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 import me.davidteresi.elsewhere.util.StringPostRequest
+import me.davidteresi.elsewhere.prefs.PrefStateManager
 
 /**
  * Make sure the URL is an HTTPS URL (i.e. starts with https://)
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity() {
     var imageUrl: String? = null
 
     private val TAG = "MainActivity"
+    private lateinit var stateManager: PrefStateManager
 
     companion object {
         var maybeGettingNewPlace = false
@@ -88,6 +90,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        stateManager = PrefStateManager(this)
+
         setSystemBarStyles()
 
         val wikipediaChip = findViewById<Chip>(R.id.wikipedia_chip)
@@ -118,14 +123,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onWikipediaChipClick() {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        )
-        val wikipediaPage = prefs.getString(getString(R.string.weather_data_wikipedia_page), null)
-        if (wikipediaPage != null) {
+        val wikipediaTitle = stateManager.getWikipediaTitle()
+        if (wikipediaTitle != null) {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://en.wikipedia.org/wiki/$wikipediaPage")
+            intent.data = Uri.parse("https://en.wikipedia.org/wiki/$wikipediaTitle")
             startActivity(intent)
         }
     }
@@ -142,8 +143,8 @@ class MainActivity : AppCompatActivity() {
     private fun refresh() {
         updateTimeFmt()
         getCachedPlaceImage()
-        val place = prefs.getPlace(this)
-        val weather = prefs.getWeather(this)
+        val place = stateManager.getPlace()
+        val weather = stateManager.getWeather()
         if (weather != null && place != null) {
             showChipGroup()
             this.place = place
@@ -151,7 +152,7 @@ class MainActivity : AppCompatActivity() {
             updatePlaceDisplay()
             updateWeatherDisplay()
             updateTimezone()
-            if (prefs.isNewDay(this)) {
+            if (stateManager.isNewDay()) {
                 maybeGettingNewPlace = true
                 this.newPlace = util.getRandomPlace(this)
             }
@@ -272,9 +273,9 @@ class MainActivity : AppCompatActivity() {
                     this.place = this.newPlace!!
                     this.newPlace = null
                     maybeGettingNewPlace = false
-                    removeSavedWikipedia()
+                    stateManager.removeSavedWikipedia()
                 }
-                prefs.saveToday(this)
+                stateManager.saveToday()
                 updateTimezone()
                 updatePlaceDisplay()
                 updateWeatherDisplay()
@@ -335,11 +336,7 @@ class MainActivity : AppCompatActivity() {
      * Get the place image and set it as the background, but only from cache.
      */
     private fun getCachedPlaceImage() {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        )
-        val url = prefs?.getString(getString(R.string.weather_data_image_url), null)
+        val url = stateManager.getPlaceImageUrl()
         if (url != null) {
             imageUrl = url
             setImageBackground(cacheOnly = true)
@@ -350,11 +347,7 @@ class MainActivity : AppCompatActivity() {
      * Get the place image and set it as the background
      */
     private fun getPlaceImage() {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        )
-        val url = prefs?.getString(getString(R.string.weather_data_image_url), null)
+        val url = stateManager.getPlaceImageUrl()
         if (url != null) {
             imageUrl = url
             setImageBackground()
@@ -385,14 +378,7 @@ class MainActivity : AppCompatActivity() {
                 val title = result?.query?.geosearch?.getOrNull(0)?.title
 
                 if (title != null) {
-                    val prefs = getSharedPreferences(
-                        getString(R.string.weather_data_preference),
-                        Context.MODE_PRIVATE
-                    )
-                    with (prefs.edit()) {
-                        putString(getString(R.string.weather_data_wikipedia_page), title)
-                        apply()
-                    }
+                    stateManager.saveWikipediaTitle(title)
                 }
             },
             Response.ErrorListener { error ->
@@ -419,7 +405,7 @@ class MainActivity : AppCompatActivity() {
                 
                 if (imageUrl != null) {
                     imageUrl = forceHttps(imageUrl!!)
-                    prefs.saveImageUrl(this, imageUrl!!)
+                    stateManager.saveImageUrl(imageUrl!!)
                     setImageBackground()
                 }
             },
@@ -428,23 +414,6 @@ class MainActivity : AppCompatActivity() {
             }
         )
         queue.add(wikidata_request)
-    }
-
-    /**
-     * Remove the saved Wikipedia page.
-     * This prevents the app from using the previously saved Wikipedia article
-     * if getting a new one fails.
-     */
-    private fun removeSavedWikipedia() {
-        val prefs = getSharedPreferences(
-            getString(R.string.weather_data_preference),
-            Context.MODE_PRIVATE
-        )
-        with (prefs.edit()) {
-            putString(getString(R.string.weather_data_wikipedia_page), null)
-            putString(getString(R.string.weather_data_image_url), null)
-            apply()
-        }
     }
 
     /**
