@@ -45,6 +45,20 @@
             android:src="@drawable/ic_settings"
             android:onClick="onSettingsBtnClick" />
 
+        <RelativeLayout
+            android:id="@+id/loading_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateTint="@android:color/white" />
+        </RelativeLayout>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
