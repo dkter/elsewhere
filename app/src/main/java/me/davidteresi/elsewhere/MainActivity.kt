@@ -38,9 +38,11 @@ import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 import me.davidteresi.elsewhere.util.PlaceDataSource
 import me.davidteresi.elsewhere.prefs.PrefStateManager
+import me.davidteresi.elsewhere.prefs.StateManager
 
 /**
  * Make sure the URL is an HTTPS URL (i.e. starts with https://)
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     var imageUrl: String? = null
 
     private val TAG = "MainActivity"
-    private lateinit var stateManager: PrefStateManager
+    private lateinit var stateManager: StateManager
     private lateinit var placeDataSource: PlaceDataSource
     private val httpClient = okhttp3.OkHttpClient()
 
@@ -313,9 +315,9 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getInternetWeather() {
         val place = this.newPlace ?: this.place
-        val url = okhttp3.HttpUrl.Builder()
-            .scheme("https")
-            .host((application as ElsewhereApp).owmHost)
+        val url = (application as ElsewhereApp).owmHost
+            .toHttpUrlOrNull()!!
+            .newBuilder()
             .addPathSegment("data")
             .addPathSegment("2.5")
             .addPathSegment("weather")
@@ -335,7 +337,7 @@ class MainActivity : AppCompatActivity() {
                         throw IOException("Unexpected code $response")
 
                     val gson = Gson()
-                    weather = gson.fromJson<Weather>(response.body!!.string(), Weather::class.java)
+                    weather = gson.fromJson<Weather>(response.body!!.string(), Weather::class.java) ?: weather
                     runOnUiThread { refreshUi() }
                 }
             }
@@ -347,6 +349,8 @@ class MainActivity : AppCompatActivity() {
      * OpenWeatherMap
      */
     private fun updateTimezone() {
+        Log.d(TAG, "${weather}")
+        Log.d(TAG, "${weather!!.timezone}")
         val textClock = findViewById<TextClock>(R.id.text_clock)
         val timezone = TimeZone.getAvailableIDs(weather!!.timezone * 1000)[0]
         textClock.setTimeZone(timezone)
@@ -407,9 +411,9 @@ class MainActivity : AppCompatActivity() {
      * NOTE: this is not necessarily the article that the image is retrieved from
      */
     private fun getPlaceWpArticle() {
-        val url = okhttp3.HttpUrl.Builder()
-            .scheme("https")
-            .host((application as ElsewhereApp).wikipediaHost)
+        val url = (application as ElsewhereApp).wikipediaHost
+            .toHttpUrlOrNull()!!
+            .newBuilder()
             .addPathSegment("w")
             .addPathSegment("api.php")
             .addQueryParameter("action", "query")
@@ -448,9 +452,9 @@ class MainActivity : AppCompatActivity() {
      * Get the nearest image of a place from the Wikidata database.
      */
     private fun getImageUrl() {
-        val url = okhttp3.HttpUrl.Builder()
-            .scheme("https")
-            .host((application as ElsewhereApp).wikidataHost)
+        val url = (application as ElsewhereApp).wikidataHost
+            .toHttpUrlOrNull()!!
+            .newBuilder()
             .addPathSegment("sparql")
             .addQueryParameter("format", "json")
             .build()

@@ -11,6 +11,7 @@ import com.bumptech.glide.request.target.Target
 import com.google.gson.Gson
 import java.util.concurrent.TimeUnit
 import org.json.JSONObject
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 import me.davidteresi.elsewhere.util.PlaceDataSource
 import me.davidteresi.elsewhere.prefs.PrefStateManager
@@ -74,9 +75,9 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
         Log.d("WeatherUpdateWorker", "Refreshing weather")
 
         if (place != null) {
-            val url = okhttp3.HttpUrl.Builder()
-                .scheme("https")
-                .host((application as ElsewhereApp).owmHost)
+            val url = (application as ElsewhereApp).owmHost
+                .toHttpUrlOrNull()!!
+                .newBuilder()
                 .addPathSegment("data")
                 .addPathSegment("2.5")
                 .addPathSegment("weather")
@@ -103,9 +104,9 @@ class WeatherUpdateWorker(val appContext: Context, workerParams: WorkerParameter
     private fun loadImage(place: Place): ResultEnum {
         Log.d("WeatherUpdateWorker", "Loading place image")
 
-        val url = okhttp3.HttpUrl.Builder()
-            .scheme("https")
-            .host((application as ElsewhereApp).wikidataHost)
+        val url = (application as ElsewhereApp).wikidataHost
+            .toHttpUrlOrNull()!!
+            .newBuilder()
             .addPathSegment("sparql")
             .addQueryParameter("format", "json")
             .build()

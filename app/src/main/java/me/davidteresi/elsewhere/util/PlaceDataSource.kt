@@ -7,11 +7,11 @@ import com.google.gson.stream.JsonReader
 import me.davidteresi.elsewhere.R
 import me.davidteresi.elsewhere.Place
 
-class PlaceDataSource(val context: Context) {
+open class PlaceDataSource(open val context: Context) {
     /**
      * @return a random place from the OpenWeatherMap place list
      */
-    fun getRandomPlace(): Place {
+    open fun getRandomPlace(): Place {
         val places = loadPlaces()
         val randomPlaceIndex = places.indices.random()
         return places[randomPlaceIndex]
