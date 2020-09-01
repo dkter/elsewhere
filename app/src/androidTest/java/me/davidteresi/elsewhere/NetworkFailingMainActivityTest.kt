@@ -30,15 +30,7 @@ class NetworkFailingMainActivityTest {
 
     @Before
     fun setup() {
-        mockWebServer.start(8080)
-        mockWebServer.dispatcher = FailingDispatcher()
-
         activityTestRule.launchActivity(null)
-    }
-
-    @After
-    fun teardown() {
-        mockWebServer.shutdown()
     }
 
     @Test
@@ -77,9 +69,6 @@ class NetworkFailingMainActivityTestImperial {
 
     @Before
     fun setup() {
-        mockWebServer.start(8080)
-        mockWebServer.dispatcher = FailingDispatcher()
-
         val context = InstrumentationRegistry.getInstrumentation().getTargetContext()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         with (prefs!!.edit()) {
@@ -88,11 +77,6 @@ class NetworkFailingMainActivityTestImperial {
         }
 
         activityTestRule.launchActivity(null)
-    }
-
-    @After
-    fun teardown() {
-        mockWebServer.shutdown()
     }
 
     @Test
@@ -124,9 +108,6 @@ class NetworkFailingMainActivityTestMetric {
 
     @Before
     fun setup() {
-        mockWebServer.start(8080)
-        mockWebServer.dispatcher = FailingDispatcher()
-
         val context = InstrumentationRegistry.getInstrumentation().getTargetContext()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         with (prefs!!.edit()) {
@@ -135,11 +116,6 @@ class NetworkFailingMainActivityTestMetric {
         }
 
         activityTestRule.launchActivity(null)
-    }
-
-    @After
-    fun teardown() {
-        mockWebServer.shutdown()
     }
 
     @Test

@@ -42,7 +42,7 @@ class NetworkUpdatingMainActivityTest {
     }
 
     @Test
-    fun placeDisplay_networkFailing() {
+    fun placeDisplay_networkUpdating() {
         val country = Locale("", test_attrs.place.country)
         val text = "${test_attrs.place.name}, ${country.getDisplayCountry()}"
         
@@ -51,7 +51,7 @@ class NetworkUpdatingMainActivityTest {
     }
 
     @Test
-    fun weatherConditionDisplay_networkFailing() {
+    fun weatherConditionDisplay_networkUpdating() {
         val text = "${test_attrs.updated.weather.weather[0].description}"
         
         onView(withId(R.id.condition))
@@ -59,7 +59,7 @@ class NetworkUpdatingMainActivityTest {
     }
 
     @Test
-    fun weatherHumidityDisplay_networkFailing() {
+    fun weatherHumidityDisplay_networkUpdating() {
         val text = "${test_attrs.updated.weather.main.humidity.roundToInt()}"
         
         onView(withId(R.id.humidity))
@@ -96,7 +96,7 @@ class NetworkUpdatingMainActivityTestImperial {
     }
 
     @Test
-    fun imperialTempDisplay_networkFailing() {
+    fun imperialTempDisplay_networkUpdating() {
         val fahrenheit = test_attrs.updated.weather.main.temp * (9f/5f) - 459.67f
         val text = "${fahrenheit.roundToInt()}"
         
@@ -105,7 +105,7 @@ class NetworkUpdatingMainActivityTestImperial {
     }
 
     @Test
-    fun imperialWindSpeedDisplay_networkFailing() {
+    fun imperialWindSpeedDisplay_networkUpdating() {
         val mih = test_attrs.updated.weather.wind.speed * 2.237f
         val text = "${mih.roundToInt()}"
         
@@ -143,7 +143,7 @@ class NetworkUpdatingMainActivityTestMetric {
     }
 
     @Test
-    fun metricTempDisplay_networkFailing() {
+    fun metricTempDisplay_networkUpdating() {
         val celsius = test_attrs.updated.weather.main.temp - 273
         val text = "${celsius.roundToInt()}"
         
@@ -152,7 +152,7 @@ class NetworkUpdatingMainActivityTestMetric {
     }
 
     @Test
-    fun metricWindSpeedDisplay_networkFailing() {
+    fun metricWindSpeedDisplay_networkUpdating() {
         val kmh = test_attrs.updated.weather.wind.speed * 3600 / 1000
         val text = "${kmh.roundToInt()}"
         

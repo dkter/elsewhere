@@ -335,6 +335,7 @@ class MainActivity : AppCompatActivity() {
                 response.use {
                     if (!response.isSuccessful)
                         throw IOException("Unexpected code $response")
+                    Log.d(TAG, "Response: $response")
 
                     val gson = Gson()
                     weather = gson.fromJson<Weather>(response.body!!.string(), Weather::class.java) ?: weather
@@ -349,8 +350,6 @@ class MainActivity : AppCompatActivity() {
      * OpenWeatherMap
      */
     private fun updateTimezone() {
-        Log.d(TAG, "${weather}")
-        Log.d(TAG, "${weather!!.timezone}")
         val textClock = findViewById<TextClock>(R.id.text_clock)
         val timezone = TimeZone.getAvailableIDs(weather!!.timezone * 1000)[0]
         textClock.setTimeZone(timezone)

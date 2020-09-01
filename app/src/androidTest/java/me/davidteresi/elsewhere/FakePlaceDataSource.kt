@@ -4,8 +4,8 @@ import android.content.Context
 
 import me.davidteresi.elsewhere.util.PlaceDataSource
 
-class FakePlaceDataSource(override val context: Context) : PlaceDataSource(context) {
+class FakePlaceDataSource(override val context: Context, var place: Place) : PlaceDataSource(context) {
     override fun getRandomPlace(): Place {
-        return test_attrs.place
+        return place
     }
 }
