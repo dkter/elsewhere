@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Styles the status bar and navigation bar.
+     * Style the status bar and navigation bar.
      * The status bar should always be translucentWhite. The navbar
      * should have the default translucent style, unless it's a gesture
      * bar such as in Android 10 and above.
