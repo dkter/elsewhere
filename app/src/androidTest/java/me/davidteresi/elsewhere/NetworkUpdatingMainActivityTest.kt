@@ -69,6 +69,12 @@ class NetworkUpdatingMainActivityTest {
         onView(withId(R.id.humidity))
             .check(matches(withText(containsString(text))))
     }
+
+    @Test
+    fun wikipediaChip_withWikipediaUpdating_show() {
+        onView(withId(R.id.wikipedia_chip))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+    }
 }
 
 @RunWith(AndroidJUnit4::class)

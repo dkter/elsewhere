@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity() {
         val weather = stateManager.getWeather()
         if (weather != null && place != null) {
             showChipGroup()
+            setWikipediaVisibility()
             this.place = place
             this.weather = weather
             updatePlaceDisplay()
@@ -184,6 +185,7 @@ class MainActivity : AppCompatActivity() {
             stateManager.removeSavedWikipedia()
         }
 
+        setWikipediaVisibility()
         stateManager.saveToday()
         updateTimezone()
         updatePlaceDisplay()
@@ -240,6 +242,18 @@ class MainActivity : AppCompatActivity() {
     private fun showChipGroup() {
         val chipGroup = findViewById<ChipGroup>(R.id.chipGroup)
         chipGroup.setVisibility(View.VISIBLE)
+    }
+
+    /**
+     * Only show the Wikipedia chip if a Wikipedia article is defined
+     */
+    private fun setWikipediaVisibility() {
+        val wpChip = findViewById<Chip>(R.id.wikipedia_chip)
+        val wikipediaTitle = stateManager.getWikipediaTitle()
+        if (wikipediaTitle == null)
+            wpChip.visibility = View.GONE
+        else
+            wpChip.visibility = View.VISIBLE
     }
 
     /**
