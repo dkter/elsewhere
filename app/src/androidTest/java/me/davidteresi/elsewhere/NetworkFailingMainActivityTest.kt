@@ -1,4 +1,8 @@
-package me.davidteresi.elsewhere
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+ package me.davidteresi.elsewhere
 
 import androidx.preference.PreferenceManager
 import androidx.test.espresso.Espresso.onView
@@ -25,8 +29,6 @@ class NetworkFailingMainActivityTest {
     @JvmField
     @Rule
     var activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
-
-    private var mockWebServer = okhttp3.mockwebserver.MockWebServer()
 
     @Before
     fun setup() {
@@ -65,8 +67,6 @@ class NetworkFailingMainActivityTestImperial {
     @Rule
     var activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
 
-    private var mockWebServer = okhttp3.mockwebserver.MockWebServer()
-
     @Before
     fun setup() {
         val context = InstrumentationRegistry.getInstrumentation().getTargetContext()
@@ -103,8 +103,6 @@ class NetworkFailingMainActivityTestMetric {
     @JvmField
     @Rule
     var activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
-
-    private var mockWebServer = okhttp3.mockwebserver.MockWebServer()
 
     @Before
     fun setup() {
