@@ -11,7 +11,7 @@ Well, you already know the weather where you are, don't you? Maybe you don't kno
 Maybe, through using Elsewhere, you'll discover a new place you've never heard of before. Actually, scratch that. I can *guarantee* you will. Almost every day, in fact. The world is huge, and there just isn't enough time to visit every corner of it -- but maybe there's enough time to know the weather in a few places.
 
 ## Download
-APK build coming soon...
+[Download APK](https://github.com/dkter/elsewhere/releases/download/v1.0/Elsewhere.apk)
 
 ## Build
 Get an OpenWeatherMap API key and create a file called `keys.properties` in the root of this repo, then format it like this:
