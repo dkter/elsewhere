@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- package me.davidteresi.elsewhere.util
+package me.davidteresi.elsewhere.util
 
 import android.content.Context
 import com.google.gson.GsonBuilder
