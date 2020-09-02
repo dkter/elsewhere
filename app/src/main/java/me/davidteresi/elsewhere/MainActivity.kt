@@ -177,6 +177,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun refreshUi() {
         showChipGroup()
+        setWikipediaVisibility()
 
         if (this.newPlace != null) {
             this.place = this.newPlace!!
@@ -185,7 +186,6 @@ class MainActivity : AppCompatActivity() {
             stateManager.removeSavedWikipedia()
         }
 
-        setWikipediaVisibility()
         stateManager.saveToday()
         updateTimezone()
         updatePlaceDisplay()
@@ -455,6 +455,7 @@ class MainActivity : AppCompatActivity() {
                     if (title != null) {
                         stateManager.saveWikipediaTitle(title)
                     }
+                    runOnUiThread { setWikipediaVisibility() }
                 }
             }
         })
