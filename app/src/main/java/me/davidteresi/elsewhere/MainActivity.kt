@@ -349,7 +349,6 @@ class MainActivity : AppCompatActivity() {
                 response.use {
                     if (!response.isSuccessful)
                         throw IOException("Unexpected code $response")
-                    Log.d(TAG, "Response: $response")
 
                     val gson = Gson()
                     weather = gson.fromJson<Weather>(response.body!!.string(), Weather::class.java) ?: weather
