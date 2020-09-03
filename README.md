@@ -6,9 +6,9 @@
 Every day, Elsewhere gives you the weather in another random location in the world.
 
 ## Why?
-Well, you already know the weather where you are, don't you? Maybe you don't know the exact number, but I bet you could estimate it based on the temperature sensors in your body. What you *don't* know, however (unless you live there) is the weather in [Concordia, Argentina](https://en.wikipedia.org/wiki/Concordia,_Entre_R%C3%ADos).
+Well, you already know the weather where you are, don't you? What you *don't* know, however (unless you live there) is the weather in Concordia, Argentina or Yingshang Chengguanzhen, China.
 
-Maybe, through using Elsewhere, you'll discover a new place you've never heard of before. Actually, scratch that. I can *guarantee* you will. Almost every day, in fact. The world is huge, and there just isn't enough time to visit every corner of it -- but maybe there's enough time to know the weather in a few places.
+Through using Elsewhere, you may discover a new place you've never heard of before. Actually, scratch that. I can *guarantee* you will. Almost every day, in fact. The world is huge, and there just isn't enough time to visit every corner of it -- but maybe there's enough time to become aware of more places.
 
 ## Download
 [Download APK](https://github.com/dkter/elsewhere/releases/download/v1.0/Elsewhere.apk)
