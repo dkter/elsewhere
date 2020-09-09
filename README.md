@@ -26,7 +26,7 @@ Then, download Elsewhere through F-Droid:
 https://f-droid.org/packages/me.davidteresi.elsewhere
 
 ### APK download
-Alternatively, [click here](https://github.com/dkter/elsewhere/releases/download/v1.0/Elsewhere.apk) to download an APK you can install on your phone.
+Alternatively, [click here](https://github.com/dkter/elsewhere/releases/download/v1.0/Elsewhere.apk) to download an APK you can install on your device.
 
 ## Build
 Get an OpenWeatherMap API key and create a file called `keys.properties` in the root of this repo, then format it like this:
