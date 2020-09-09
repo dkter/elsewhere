@@ -14,7 +14,7 @@ Through using Elsewhere, you may discover a new place you've never heard of befo
 Elsewhere targets Android 11.0 and supports Android 5.0 (Lollipop) and newer.
 
 ### Google Play Store
-coming soon!
+[Download now!](https://play.google.com/store/apps/details?id=me.davidteresi.elsewhere)
 
 ### F-Droid
 Make sure you have the [IzzyOnDroid F-Droid repo](https://apt.izzysoft.de/fdroid/index/) added:
