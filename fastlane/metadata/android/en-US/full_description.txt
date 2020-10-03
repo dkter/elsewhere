@@ -1,0 +1,5 @@
+<p>Every day, <i>Elsewhere</i> gives you the weather in another random location in the world.</p>
+<p><br><b>Why?</b></p>
+<p>Well, you already know the weather where you are, don’t you? What you <i>don‘t</i> know, however (unless you live there) is the weather in Concordia, Argentina or Yingshang Chengguanzhen, China.</p>
+<p>Through using <i>Elsewhere,</i> you may discover a new place you’ve never heard of before. Actually, scratch that. I can <i>guarantee</i> you will. Almost every day, in fact. The world is huge, and there just isn’t enough time to visit every corner of it -- but maybe there’s enough time to become aware of more places.</p>
+<p><br>Weather data is sourced from <a href='https://openweathermap.org/' target='_blank'>OpenWeatherMap</a>.</p>
