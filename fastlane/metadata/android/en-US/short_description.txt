@@ -1,1 +1,1 @@
-tells you the weather where you are NOT
+The weather app that tells you the weather where you aren't
