@@ -1,0 +1,5 @@
+<p>Jeden Tag zeigt <i>Elsewhere</i> das Wetter von einem anderen, zufällig gewählten Ort.</p>
+<p><br><b>WARUM?</b></p>
+<p>Na ja, wie das Wetter an Deinem gegenwärtigen Standort ist, siehst Du ja selbst. Was Du jedoch nicht siehst (es sei denn, Du bist genau dort), ist das Wetter in Concordia, Argentinien oder Yingshang Chengguanzhen, China.</p>
+<p>Mit <i>Elsewhere</i> kannst Du Orte entdecken, von denen Du nie zuvor gehört hast. Genau genommen: Streich das; ich kann Dir <i>garantieren,</i>, dass Du das wirst. Eigentlich fast jeden Tag. Die Welt ist riesig – und die Zeit reicht einfach nicht aus, jede einzelne Ecke davon zu besuchen. Vielleicht jedoch reicht sie, um sich weiterer Orte bewusst zu werden.</p>
+<p><br>Die Wetterdaten stammen von <a href='https://openweathermap.org/' target='_blank'>OpenWeatherMap</a>.</p>
