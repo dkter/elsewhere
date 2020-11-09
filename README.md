@@ -22,7 +22,7 @@ Make sure you have the [IzzyOnDroid F-Droid repo](https://apt.izzysoft.de/fdroid
 - Tap the plus button in the top right 
 - Add this URL under "Repository address": `https://apt.izzysoft.de/fdroid/repo`
 
-Then, download Elsewhere through the F-Droid client once the index has been fetched. You can also pick it manually from:
+Then, download Elsewhere through the F-Droid client once the index has been fetched. You can also download it manually from:
 https://apt.izzysoft.de/fdroid/index/apk/me.davidteresi.elsewhere
 
 ### APK download
