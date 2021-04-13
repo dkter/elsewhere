@@ -1,0 +1,59 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<resources>
+    <string name="app_name">Elsewhere</string>
+
+    <string name="place_name">%1$s, %2$s</string>
+    <string name="humidity">%1$d%% Luftfeuchtigkeit</string>
+    <string name="wind_metric">%1$d km/h Windgeschwindigkeit</string>
+    <string name="wind_imperial">%1$d Meilen/h Windgeschwindigkeit</string>
+
+    <string name="wikipedia">Wikipedia</string>
+    <string name="map">Karte</string>
+    <string name="settings">Einstellungen</string>
+
+    <string name="default_temp">-270°</string>
+    <string name="default_place">Im Weltraum</string>
+
+    <string name="weather_data_preference">weather_data</string>
+    <string name="weather_data_place_id">weather_data_place_id</string>
+    <string name="weather_data_place_name">weather_data_place_name</string>
+    <string name="weather_data_place_state">weather_data_place_state</string>
+    <string name="weather_data_place_country">weather_data_place_country</string>
+    <string name="weather_data_place_coord_lat">weather_data_place_coord_lat</string>
+    <string name="weather_data_place_coord_lon">weather_data_place_coord_lon</string>
+
+    <string name="weather_data_temp">weather_data_temp</string>
+    <string name="weather_data_humidity">weather_data_humidity</string>
+    <string name="weather_data_condition_main">weather_data_condition_main</string>
+    <string name="weather_data_condition_description">weather_data_condition_description</string>
+    <string name="weather_data_wind_speed">weather_data_wind_speed</string>
+    <string name="weather_data_timezone">weather_data_timezone</string>
+
+    <string name="weather_data_day">weather_data_day</string>
+    <string name="weather_data_image_url">weather_data_image_url</string>
+    <string name="weather_data_wikipedia_page">weather_data_wikipedia_page</string>
+
+    <string name="title_activity_settings">Einstellungen</string>
+
+    <!-- Preference Titles -->
+    <string name="format_header">Format</string>
+    <string name="about_header">Über</string>
+
+    <!-- Format Preferences -->
+    <string name="units">units</string>
+    <string name="units_title">Einheiten</string>
+    <string name="timefmt">timefmt</string>
+    <string name="timefmt_title">Zeitformat</string>
+
+    <!-- About category in settings page -->
+    <string name="author_title">Erstellt von David Teresi</string>
+    <string name="author_subtitle">https://davidteresi.me</string>
+    <string name="author_website">https://davidteresi.me</string>
+    <string name="opensource_title">Quellcode</string>
+    <string name="opensource_subtitle">Lizenziert unter der Mozilla Public License</string>
+    <string name="opensource_website">https://github.com/dkter/elsewhere</string>
+    <string name="sourcecredits">Wetterdaten von OpenWeatherMap. Ortsbilder stammen von Wikimedia Commons und werden mit Wikidata abgefragt.</string>
+</resources>
