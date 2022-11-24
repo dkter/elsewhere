@@ -50,8 +50,8 @@
 
     <!-- About category in settings page -->
     <string name="author_title">Created by David Teresi</string>
-    <string name="author_subtitle">https://davidteresi.me</string>
-    <string name="author_website">https://davidteresi.me</string>
+    <string name="author_subtitle">https://david.industries</string>
+    <string name="author_website">https://david.industries</string>
     <string name="opensource_title">Source code</string>
     <string name="opensource_subtitle">Licensed under the Mozilla Public License</string>
     <string name="opensource_website">https://github.com/dkter/elsewhere</string>

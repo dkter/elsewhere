@@ -38,7 +38,7 @@ You can then build it normally.
 **Tip:** if you don't want to use Android Studio, make sure ADB is in your path and launch the app using `dbg.ps1`. It will build the app, install it on your device, run it, and launch logcat filtered to messages from this app.
 
 ## About
-Created by [David Teresi](https://davidteresi.me).  
+Created by [David Teresi](https://david.industries).  
 Weather data is sourced from [OpenWeatherMap](https://openweathermap.org). Place images are from [Wikimedia Commons](https://commons.wikimedia.org) and collected using [Wikidata](https://wikidata.org/).
 
 Licensed under the Mozilla Public License. For more information see [LICENSE.txt](LICENSE.txt).
